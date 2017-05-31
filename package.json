@@ -24,6 +24,7 @@
     "salathegroup"
   ],
   "dependencies": {
-    "salathegroup_apis_common": "https://github.com/salathegroup/JavaScriptAPIs_common.git"
+    "salathegroup_apis_common": "https://github.com/salathegroup/JavaScriptAPIs_common.git",
+    "react-native-device-info": "^0.10.2"
   }
 }
