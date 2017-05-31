@@ -2,7 +2,7 @@
   "name": "myopenfood",
   "repository": {
     "type": "git",
-    "url": "https://github.com/salathegroup/JavaScript_APIs.git/trunk/MyOpenFood"
+    "url": "https://github.com/salathegroup/JavaScriptAPIs_MyOpenFood.git"
   },
   "version": "0.0.1",
   "description": "MyOpenFood API.",
@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
-  "homepage": "https://github.com/salathegroup/JavaScript_APIs.git",
+  "homepage": "https://github.com/salathegroup/JavaScriptAPIs_MyOpenFood.git",
   "keywords": [
     "myopenfood",
     "openfood",
@@ -22,5 +22,5 @@
     "api",
     "salathe",
     "salathegroup"
-  ],
+  ]
 }
