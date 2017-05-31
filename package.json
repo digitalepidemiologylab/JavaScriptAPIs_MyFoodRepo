@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/salathegroup/JavaScriptAPIs_MyOpenFood.git"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "MyOpenFood API.",
   "author": "Boris Conforty <boris@conforty.net>, Salathé Group, EPFL, Switzerland",
   "main": "V1.js",
@@ -22,5 +22,8 @@
     "api",
     "salathe",
     "salathegroup"
-  ]
+  ],
+  "dependencies": {
+    "salathegroup_apis_common": "https://github.com/salathegroup/JavaScriptAPIs_common.git"
+  }
 }
