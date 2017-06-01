@@ -9,7 +9,7 @@ MyOpenFood's API could be
 
 import { GenericAPI } from 'salathegroup_apis_common';
 
-const DeviceInfo = require('react-native-device-info');
+import DeviceInfo from 'react-native-device-info';
 
 export type MyOpenFoodInstallationInfo = {
   app_version: string,
