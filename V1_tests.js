@@ -17,8 +17,8 @@
     .catch(error => handleCreateUserError(error))
 */
 
-import MyOpenFoodAPI from 'V1';
-import type { MyOpenFoodUserInfo } from 'V1';
+import MyOpenFoodAPI from './V1';
+import type { MyOpenFoodUserInfo } from './V1';
 
 import { v4 as freshUuid } from 'uuid';
 
