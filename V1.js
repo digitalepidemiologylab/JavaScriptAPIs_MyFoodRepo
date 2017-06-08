@@ -44,6 +44,7 @@ export default class MyOpenFoodAPI extends GenericAPI {
   static revision = 'ALPHA';
 
   uuid: string;
+  user: MyOpenFoodUserInfo;
 
   constructor(apiKey: string, host: string = '', version: string = '1') {
     super(apiKey, host || MyOpenFoodAPI.defaultHost, version);
@@ -62,8 +63,16 @@ export default class MyOpenFoodAPI extends GenericAPI {
     return this.requestDeleteURL('users/me');
   }
 
-  getUser(): Promise<Object> {
-    return this.requestGetURL('users/me');
+  getUser(id?: number): Promise<Object> {
+    const user = id || 'me';
+    return new Promise((resolve, reject) => {
+      this.requestGetURL(`users/${user}`)
+      .then((response) => {
+        this.user = response.data.user;
+        resolve(response);
+      })
+      .catch(error => reject(error));
+    });
   }
 
   logIn(user: MyOpenFoodUserInfo): Promise<Object> {
