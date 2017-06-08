@@ -20,10 +20,14 @@ export type MyOpenFoodInstallationInfo = {
 }
 
 export type MyOpenFoodUserInfo = {
-    auth_type: 'email_password' | 'facebook' | 'anonymous',
-    email?: string,
-    password?: string,
-    facebookUserID?: string,
+  id?: number,
+  auth_type: 'email_password' | 'facebook' | 'anonymous',
+  email?: string,
+  password?: string,
+  first_name?: string,
+  last_name?: string,
+  nickname?: string,
+  avatar_url?: string,
 }
 
 const installation: MyOpenFoodInstallationInfo = {
