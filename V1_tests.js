@@ -35,6 +35,10 @@ const userInfo: MyOpenFoodUserInfo = {
   password: '12345678',
 };
 
+const anonymousUserInfo: MyOpenFoodUserInfo = {
+  auth_type: 'anonymous',
+};
+
 /* $FlowForTest - Here, we put an invalid auth_type on purpose */
 const userInfoWrongAuthType: MyOpenFoodUserInfo = {
   ...userInfo,
@@ -80,6 +84,9 @@ async function reportInstallation() {
 }
 async function reportInstallationWrongUuid() {
   return myOpenFoodEndpoint.reportInstallation('asdf');
+}
+async function loginAnonymousUser() {
+  return myOpenFoodEndpoint.logIn(anonymousUserInfo);
 }
 async function loginExistingUser() {
   return myOpenFoodEndpoint.logIn(userInfo);
@@ -140,6 +147,18 @@ export default async function runTests(apiKey: string) {
 
   // We must first report our installation details. Should be fine since our UUID is valid
   await testFunction(reportInstallation, 'Installation report');
+
+  // Should succeed
+  await testFunction(loginAnonymousUser, 'Anonymous user login');
+  await testFunction(getUser, 'Get user');
+  await testFunction(getUserWithId, 'Get user with ID');
+  // Should fail
+  await testFunction(getUserWithWrongId, 'Get user with wrong ID', false);
+  // Should succeed
+  await testFunction(logout, 'Logout');
+
+  // Should fail, since we logged out
+  await testFunction(getUser, 'Get user after logout', false);
 
   // Should succeed
   await testFunction(loginExistingUser, 'Existing user login');
