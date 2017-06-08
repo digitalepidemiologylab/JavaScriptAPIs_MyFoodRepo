@@ -111,6 +111,14 @@ async function deleteUser() {
 async function getUser() {
   return myOpenFoodEndpoint.getUser();
 }
+async function getUserWithId() {
+  const userId = myOpenFoodEndpoint.user.id;
+  return myOpenFoodEndpoint.getUser(userId);
+}
+async function getUserWithWrongId() {
+  const userId = myOpenFoodEndpoint.user.id;
+  return myOpenFoodEndpoint.getUser(982374691872364);
+}
 async function logout() {
   return myOpenFoodEndpoint.logOut();
 }
