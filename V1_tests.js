@@ -17,10 +17,10 @@
     .catch(error => handleCreateUserError(error))
 */
 
+import { v4 as freshUuid } from 'uuid';
+
 import MyOpenFoodAPI from './V1';
 import type { MyOpenFoodUserInfo } from './V1';
-
-import { v4 as freshUuid } from 'uuid';
 
 let myOpenFoodEndpoint: MyOpenFoodAPI;
 
@@ -123,7 +123,6 @@ async function getUserWithId() {
   return myOpenFoodEndpoint.getUser(userId);
 }
 async function getUserWithWrongId() {
-  const userId = myOpenFoodEndpoint.user.id;
   return myOpenFoodEndpoint.getUser(982374691872364);
 }
 async function logout() {
