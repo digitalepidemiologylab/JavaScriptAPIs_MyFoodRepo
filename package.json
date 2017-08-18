@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/salathegroup/JavaScriptAPIs_MyOpenFood.git"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "MyOpenFood API.",
   "author": "Boris Conforty <boris@conforty.net>, Salathé Group, EPFL, Switzerland",
   "main": "V1.js",
@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "salathegroup_apis_common": "https://github.com/salathegroup/JavaScriptAPIs_common.git",
-    "react-native-device-info": "^0.10.2"
+    "react-native-device-info": "^0.10.2",
+    "uuid": "^3.1.0"
   }
 }
