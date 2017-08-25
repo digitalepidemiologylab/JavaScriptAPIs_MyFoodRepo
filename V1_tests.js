@@ -224,7 +224,9 @@ export default async function runTests(apiKey: string) {
   // Gather results and report
   let results = testResults.join('\n\n***************\n');
   if (results.indexOf('UNEXPECTED') >= 0) {
-    results = `AT LEAST ONE TEST FAILED\n\n${results}`;
+    results = `AT LEAST ONE TEST FAILED!\n\n${results}`;
+  } else {
+    results = `ALL TESTS WENT FINE :)\n\n${results}`;
   }
   console.log(results);
   alert(results);
