@@ -35,6 +35,11 @@ const userInfo: MyOpenFoodUserInfo = {
   password: '12345678',
 };
 
+const userInfoUpperCaseToBeTrimmed: MyOpenFoodUserInfo = {
+  ...userInfo,
+  email: ` \t${userInfo.email.toUpperCase()} `,
+};
+
 const anonymousUserInfo: MyOpenFoodUserInfo = {
   auth_type: 'anonymous',
 };
@@ -57,7 +62,7 @@ const userInfoWrongPassword: MyOpenFoodUserInfo = {
 
 const newUserInfo: MyOpenFoodUserInfo = {
   auth_type: 'email_password',
-  email: `boris.conforty${Math.random()}@epfl.ch`,
+  email: `Boris.Conforty${Math.random()}@epfl.ch`,
   password: '123456a!',
 };
 
@@ -111,7 +116,7 @@ async function loginAnonymousUser() {
   return myOpenFoodEndpoint.logIn(anonymousUserInfo);
 }
 async function loginExistingUser() {
-  return myOpenFoodEndpoint.logIn(userInfo);
+  return myOpenFoodEndpoint.logIn(userInfoUpperCaseToBeTrimmed);
 }
 async function loginWrongAuthType() {
   return myOpenFoodEndpoint.logIn(userInfoWrongAuthType);
