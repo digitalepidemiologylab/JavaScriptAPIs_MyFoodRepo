@@ -58,19 +58,41 @@ const userInfoWrongPassword: MyOpenFoodUserInfo = {
 const newUserInfo: MyOpenFoodUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
-  password: '12345678',
+  password: '123456a!',
 };
 
 const newUserInfoWrongEmail: MyOpenFoodUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}epfl.ch`,
-  password: '12345678',
+  password: '123456a!',
 };
 
+// Password too short
 const newUserInfoWrongPassword: MyOpenFoodUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '123',
+};
+
+// Password doesn't have a letter
+const newUserInfoWrongPassword2: MyOpenFoodUserInfo = {
+  auth_type: 'email_password',
+  email: `boris.conforty${Math.random()}@epfl.ch`,
+  password: '12345678',
+};
+
+// Password doesn't have a number
+const newUserInfoWrongPassword3: MyOpenFoodUserInfo = {
+  auth_type: 'email_password',
+  email: `boris.conforty${Math.random()}@epfl.ch`,
+  password: 'abcdefgh',
+};
+
+// Password doesn't have a special character
+const newUserInfoWrongPassword4: MyOpenFoodUserInfo = {
+  auth_type: 'email_password',
+  email: `boris.conforty${Math.random()}@epfl.ch`,
+  password: '123456ab',
 };
 
 function expectedText(expected) {
@@ -111,6 +133,15 @@ async function createUserWrongEmail() {
 }
 async function createUserWrongPassword() {
   return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword);
+}
+async function createUserWrongPassword2() {
+  return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword2);
+}
+async function createUserWrongPassword3() {
+  return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword3);
+}
+async function createUserWrongPassword4() {
+  return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword4);
 }
 async function deleteUser() {
   return myOpenFoodEndpoint.deleteUser();
@@ -175,6 +206,9 @@ export default async function runTests(apiKey: string) {
 
   await testFunction(createUserWrongEmail, 'Create user with invalid email', false);
   await testFunction(createUserWrongPassword, 'Create user with invalid password', false);
+  await testFunction(createUserWrongPassword2, 'Create user with invalid password - 2', false);
+  await testFunction(createUserWrongPassword3, 'Create user with invalid password - 3', false);
+  await testFunction(createUserWrongPassword4, 'Create user with invalid password - 4', false);
 
   // Should fail, since the user doesn't exist yet
   await testFunction(loginNewUser, 'Non-existing user login', false);
