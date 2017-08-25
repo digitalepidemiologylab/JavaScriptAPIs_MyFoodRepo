@@ -133,9 +133,10 @@ async function logout() {
 const testResults: string[] = [];
 
 async function testFunction(f: Function, text: string, expectSuccess: boolean = true) {
+  const t = new Date();
   await f()
-  .then(response => testResults.push(`${text}\n${expectedText(expectSuccess)} SUCCESS\n\n${JSON.stringify(response)}`))
-  .catch(error => testResults.push(`${text}\n${expectedText(!expectSuccess)} FAILURE\n\n${error}`));
+  .then(response => testResults.push(`${text}\n${expectedText(expectSuccess)} SUCCESS\nDone in ${(new Date() - t)} ms\n${JSON.stringify(response)}`))
+  .catch(error => testResults.push(`${text}\n${expectedText(!expectSuccess)} FAILURE\nDone in ${(new Date() - t)} ms\n${error}`));
 }
 
 export default async function runTests(apiKey: string) {
