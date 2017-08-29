@@ -66,6 +66,38 @@ const newUserInfo: MyOpenFoodUserInfo = {
   password: '123456a!',
 };
 
+const modifiedUserInfo: MyOpenFoodUserInfo = {
+  first_name: 'Boris',
+  last_name: 'Conforty',
+};
+
+const modifiedUserAuth1: MyOpenFoodUserInfo = {
+  email: 'newUserInfo.email',
+  password: newUserInfo.email,
+};
+
+const modifiedUserAuth2: MyOpenFoodUserInfo = {
+  email: 'boris.conforty3@epfl.ch',
+  password: newUserInfo.password,
+};
+
+const modifiedUserAuth3: MyOpenFoodUserInfo = {
+  email: 'boris.conforty3999@epfl.ch',
+  password: newUserInfo.password,
+};
+
+const modifiedUserAuth4: MyOpenFoodUserInfo = {
+  email: 'boris.conforty3999@epfl.ch',
+  password: newUserInfo.password,
+  new_password: 'newUserInfo.email1',
+};
+
+const modifiedUserAuth5: MyOpenFoodUserInfo = {
+  email: 'boris.conforty3999@epfl.ch',
+  password: newUserInfo.password,
+  new_password: '12',
+};
+
 const newUserInfoWrongEmail: MyOpenFoodUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}epfl.ch`,
@@ -129,6 +161,24 @@ async function loginWrongPassword() {
 }
 async function loginNewUser() {
   return myOpenFoodEndpoint.logIn(newUserInfo);
+}
+async function modifyUser() {
+  return myOpenFoodEndpoint.updateUser(modifiedUserInfo);
+}
+async function modifyUserLogin1() {
+  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth1);
+}
+async function modifyUserLogin2() {
+  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth2);
+}
+async function modifyUserLogin3() {
+  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth3);
+}
+async function modifyUserLogin4() {
+  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth4);
+}
+async function modifyUserLogin5() {
+  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth5);
 }
 async function createUser() {
   return myOpenFoodEndpoint.createUser(newUserInfo);
@@ -221,6 +271,13 @@ export default async function runTests(apiKey: string) {
   // Should be able to create a new user, log her in and delete her
   await testFunction(createUser, 'Create user');
   await testFunction(loginNewUser, 'Newly created user login');
+  await testFunction(modifyUser, 'User modification');
+  await testFunction(getUser, 'Get user after modification');
+  await testFunction(modifyUserLogin1, 'User login modification 1', false);
+  await testFunction(modifyUserLogin2, 'User login modification 2', false);
+  await testFunction(modifyUserLogin3, 'User login modification 3');
+  await testFunction(modifyUserLogin4, 'User login modification 4');
+  await testFunction(modifyUserLogin5, 'User login modification 5', false);
   await testFunction(deleteUser, 'User deletion');
 
   // Should fail, since the user has been deleted
