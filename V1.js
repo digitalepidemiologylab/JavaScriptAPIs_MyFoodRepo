@@ -75,6 +75,11 @@ export default class MyOpenFoodAPI extends GenericAPI {
     });
   }
 
+  updateUser(user: MyOpenFoodUserInfo): Promise<Object> {
+    const id = user.id || 'me';
+    return this.requestPatchURL(`users/${id}`, { user });
+  }
+
   logIn(user: MyOpenFoodUserInfo): Promise<Object> {
     return new Promise((resolve, reject) => {
       const sessionInfo = {
