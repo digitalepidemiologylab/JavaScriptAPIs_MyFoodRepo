@@ -21,7 +21,7 @@ export type MyOpenFoodInstallationInfo = {
 
 export type MyOpenFoodUserInfo = {
   id?: number,
-  auth_type: 'email_password' | 'facebook' | 'anonymous',
+  auth_type: 'email_password' | 'anonymous',
   email?: string,
   password?: string,
   first_name?: string,
