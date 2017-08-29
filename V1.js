@@ -24,6 +24,7 @@ export type MyOpenFoodUserInfo = {
   auth_type: 'email_password' | 'anonymous',
   email?: string,
   password?: string,
+  new_password?: string,
   first_name?: string,
   last_name?: string,
   nickname?: string,
@@ -78,6 +79,11 @@ export default class MyOpenFoodAPI extends GenericAPI {
   updateUser(user: MyOpenFoodUserInfo): Promise<Object> {
     const id = user.id || 'me';
     return this.requestPatchURL(`users/${id}`, { user });
+  }
+
+  updateUserLogin(user: MyOpenFoodUserInfo): Promise<Object> {
+    const id = user.id || 'me';
+    return this.requestPatchURL(`users/${id}/update_email_password`, { user });
   }
 
   logIn(user: MyOpenFoodUserInfo): Promise<Object> {
