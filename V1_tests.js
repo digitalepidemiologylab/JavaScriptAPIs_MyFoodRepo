@@ -37,7 +37,7 @@ const userInfo: MyOpenFoodUserInfo = {
 
 const userInfoUpperCaseToBeTrimmed: MyOpenFoodUserInfo = {
   ...userInfo,
-  email: ` \t${userInfo.email.toUpperCase()} `,
+  email: ` \t${(userInfo.email || '').toUpperCase()} `,
 };
 
 const anonymousUserInfo: MyOpenFoodUserInfo = {
