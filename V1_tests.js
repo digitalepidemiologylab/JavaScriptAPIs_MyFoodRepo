@@ -19,114 +19,114 @@
 
 import { v4 as freshUuid } from 'uuid';
 
-import MyOpenFoodAPI from './V1';
-import type { MyOpenFoodUserInfo } from './V1';
+import MOFAPI from './V1';
+import type { MOFUserInfo } from './V1';
 
-let myOpenFoodEndpoint: MyOpenFoodAPI;
+let myOpenFoodEndpoint: MOFAPI;
 
 // In real life, we should get our uuid from persistence
 const storedUuid = '2e58dcd7-0628-47f3-9007-8e09415f70d1';
 const uuid = storedUuid || freshUuid();
 
 // These are used for our tests
-const userInfo: MyOpenFoodUserInfo = {
+const userInfo: MOFUserInfo = {
   auth_type: 'email_password',
   email: 'boris.conforty3@epfl.ch',
   password: '12345678',
 };
 
-const userInfoUpperCaseToBeTrimmed: MyOpenFoodUserInfo = {
+const userInfoUpperCaseToBeTrimmed: MOFUserInfo = {
   ...userInfo,
   email: ` \t${(userInfo.email || '').toUpperCase()} `,
 };
 
-const anonymousUserInfo: MyOpenFoodUserInfo = {
+const anonymousUserInfo: MOFUserInfo = {
   auth_type: 'anonymous',
 };
 
 /* $FlowForTest - Here, we put an invalid auth_type on purpose */
-const userInfoWrongAuthType: MyOpenFoodUserInfo = {
+const userInfoWrongAuthType: MOFUserInfo = {
   ...userInfo,
   auth_type: 'blabla',
 };
 
-const userInfoWrongEmail: MyOpenFoodUserInfo = {
+const userInfoWrongEmail: MOFUserInfo = {
   ...userInfo,
   email: 'blabla',
 };
 
-const userInfoWrongPassword: MyOpenFoodUserInfo = {
+const userInfoWrongPassword: MOFUserInfo = {
   ...userInfo,
   password: 'blabla',
 };
 
-const newUserInfo: MyOpenFoodUserInfo = {
+const newUserInfo: MOFUserInfo = {
   auth_type: 'email_password',
   email: `Boris.Conforty${Math.random()}@epfl.ch`,
   password: '123456a!',
 };
 
-const modifiedUserInfo: MyOpenFoodUserInfo = {
+const modifiedUserInfo: MOFUserInfo = {
   first_name: 'Boris',
   last_name: 'Conforty',
 };
 
-const modifiedUserAuth1: MyOpenFoodUserInfo = {
+const modifiedUserAuth1: MOFUserInfo = {
   email: 'newUserInfo.email',
   password: newUserInfo.email,
 };
 
-const modifiedUserAuth2: MyOpenFoodUserInfo = {
+const modifiedUserAuth2: MOFUserInfo = {
   email: 'boris.conforty3@epfl.ch',
   password: newUserInfo.password,
 };
 
-const modifiedUserAuth3: MyOpenFoodUserInfo = {
+const modifiedUserAuth3: MOFUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
 };
 
-const modifiedUserAuth4: MyOpenFoodUserInfo = {
+const modifiedUserAuth4: MOFUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
   new_password: 'newUserInfo.email1',
 };
 
-const modifiedUserAuth5: MyOpenFoodUserInfo = {
+const modifiedUserAuth5: MOFUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
   new_password: '12',
 };
 
-const newUserInfoWrongEmail: MyOpenFoodUserInfo = {
+const newUserInfoWrongEmail: MOFUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}epfl.ch`,
   password: '123456a!',
 };
 
 // Password too short
-const newUserInfoWrongPassword: MyOpenFoodUserInfo = {
+const newUserInfoWrongPassword: MOFUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '123',
 };
 
 // Password doesn't have a letter
-const newUserInfoWrongPassword2: MyOpenFoodUserInfo = {
+const newUserInfoWrongPassword2: MOFUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '12345678',
 };
 
 // Password doesn't have a number
-const newUserInfoWrongPassword3: MyOpenFoodUserInfo = {
+const newUserInfoWrongPassword3: MOFUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: 'abcdefgh',
 };
 
 // Password doesn't have a special character
-const newUserInfoWrongPassword4: MyOpenFoodUserInfo = {
+const newUserInfoWrongPassword4: MOFUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '123456ab',
@@ -226,7 +226,7 @@ async function testFunction(f: Function, text: string, expectSuccess: boolean = 
 }
 
 export default async function runTests(apiKey: string) {
-  myOpenFoodEndpoint = new MyOpenFoodAPI(apiKey);
+  myOpenFoodEndpoint = new MOFAPI(apiKey);
 
   // Should fail
   await testFunction(reportInstallationWrongUuid, 'Installation report with invalid UUID', false);

@@ -11,7 +11,7 @@ import { GenericAPI } from 'salathegroup_apis_common';
 
 import DeviceInfo from 'react-native-device-info';
 
-export type MyOpenFoodInstallationInfo = {
+type InstallationInfo = {
   app_version: string,
   device_vendor: string,
   device_name: string,
@@ -19,7 +19,7 @@ export type MyOpenFoodInstallationInfo = {
   os_version: string,
 }
 
-export type MyOpenFoodUserInfo = {
+type UserInfo = {
   id?: number,
   auth_type?: 'email_password' | 'anonymous',
   email?: string,
@@ -31,7 +31,15 @@ export type MyOpenFoodUserInfo = {
   avatar_url?: string,
 }
 
-const installation: MyOpenFoodInstallationInfo = {
+type APIResponseType<T> = {
+  data: T,
+  meta: {
+    api_version: string,
+  },
+  status: number,
+}
+
+const installation: InstallationInfo = {
   app_version: DeviceInfo.getReadableVersion(),
   device_vendor: DeviceInfo.getManufacturer(),
   device_name: DeviceInfo.getModel(),
@@ -39,16 +47,16 @@ const installation: MyOpenFoodInstallationInfo = {
   os_version: DeviceInfo.getSystemVersion(),
 };
 
-export default class MyOpenFoodAPI extends GenericAPI {
+export default class MOFAPI extends GenericAPI {
 
   static defaultHost = 'https://myopenfood-production.herokuapp.com';
   static revision = 'ALPHA';
 
   uuid: string;
-  user: MyOpenFoodUserInfo;
+  user: MOFUserInfo;
 
   constructor(apiKey: string, host: string = '', version: string = '1') {
-    super(apiKey, host || MyOpenFoodAPI.defaultHost, version);
+    super(apiKey, host || MOFAPI.defaultHost, version);
   }
 
   reportInstallation(uuid: string): Promise<> {
@@ -56,7 +64,7 @@ export default class MyOpenFoodAPI extends GenericAPI {
     return this.requestPatchURL(`installations/${uuid}`, { installation });
   }
 
-  createUser(user: MyOpenFoodUserInfo): Promise<Object> {
+  createUser(user: UserInfo): Promise<Object> {
     return this.requestPostURL('users', { user });
   }
 
@@ -76,17 +84,17 @@ export default class MyOpenFoodAPI extends GenericAPI {
     });
   }
 
-  updateUser(user: MyOpenFoodUserInfo): Promise<Object> {
+  updateUser(user: UserInfo): Promise<Object> {
     const id = user.id || 'me';
     return this.requestPatchURL(`users/${id}`, { user });
   }
 
-  updateUserLogin(user: MyOpenFoodUserInfo): Promise<Object> {
+  updateUserLogin(user: UserInfo): Promise<Object> {
     const id = user.id || 'me';
     return this.requestPatchURL(`users/${id}/update_email_password`, { user });
   }
 
-  logIn(user: MyOpenFoodUserInfo): Promise<Object> {
+  logIn(user: UserInfo): Promise<Object> {
     return new Promise((resolve, reject) => {
       const sessionInfo = {
         user,
@@ -107,3 +115,10 @@ export default class MyOpenFoodAPI extends GenericAPI {
     return this.requestDeleteURL(`sessions/${this.sessionToken}`, {});
   }
 }
+
+export type MOFInstallationInfo = InstallationInfo;
+export type MOFUserInfo = UserInfo;
+export type MOFAPIResponseType<T> = APIResponseType<T>;
+export type MOFDishRecognitionPredictionType = DishRecognitionPredictionType;
+export type MOFDishRecognitionType = DishRecognitionType;
+export type MOFDishRecognitionResponseType = DishRecognitionResponseType;
