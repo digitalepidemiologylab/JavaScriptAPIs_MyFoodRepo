@@ -39,6 +39,23 @@ type APIResponseType<T> = {
   status: number,
 }
 
+type DishRecognitionPredictionType = {
+  class: string,
+  confidence: number,
+}
+
+type DishRecognitionType = {
+  image_id: number,
+  image_recognition_id: string,
+  image_url: string,
+  predictions: [DishRecognitionPredictionType],
+  status: string,
+}
+
+type DishRecognitionResponseType = {
+  recognition: DishRecognitionType,
+}
+
 const installation: InstallationInfo = {
   app_version: DeviceInfo.getReadableVersion(),
   device_vendor: DeviceInfo.getManufacturer(),
@@ -113,6 +130,15 @@ export default class MOFAPI extends GenericAPI {
 
   logOut(): Promise<Object> {
     return this.requestDeleteURL(`sessions/${this.sessionToken}`, {});
+  }
+
+  recognizeDishImage(base64: string, mimetype: string = 'image/png'): Promise<Object> {
+    const body = {
+      image: {
+        file: `data:${mimetype};base64,${base64}`
+      }
+    };
+    return this.requestPostURL('images/recognize', body);
   }
 }
 
