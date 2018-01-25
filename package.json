@@ -1,19 +1,21 @@
 {
-  "name": "myopenfood",
+  "name": "myfoodrepo",
   "repository": {
     "type": "git",
-    "url": "https://github.com/salathegroup/JavaScriptAPIs_MyOpenFood.git"
+    "url": "https://github.com/salathegroup/JavaScriptAPIs_MyFoodRepo.git"
   },
   "version": "0.0.8",
-  "description": "MyOpenFood API.",
+  "description": "MyFoodRepo API.",
   "author": "Boris Conforty <boris@conforty.net>, Salathé Group, EPFL, Switzerland",
   "main": "V1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
-  "homepage": "https://github.com/salathegroup/JavaScriptAPIs_MyOpenFood.git",
+  "homepage": "https://github.com/salathegroup/JavaScriptAPIs_MyFoodRepo.git",
   "keywords": [
+    "myfoodrepo",
+    "foodrepo",
     "myopenfood",
     "openfood",
     "react",
