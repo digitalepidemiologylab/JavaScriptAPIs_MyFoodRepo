@@ -3,7 +3,7 @@
 /*
 
 This is just a draft of what a JavaScript consumption of
-MyOpenFood's API could be
+MyFoodRepo's API could be
 
 */
 
@@ -64,16 +64,16 @@ const installation: InstallationInfo = {
   os_version: DeviceInfo.getSystemVersion(),
 };
 
-export default class MOFAPI extends GenericAPI {
+export default class MFRAPI extends GenericAPI {
 
-  static defaultHost = 'https://myopenfood-production.herokuapp.com';
+  static defaultHost = 'https://myfoodrepo-production.herokuapp.com';
   static revision = 'ALPHA';
 
   uuid: string;
-  user: MOFUserInfo;
+  user: MFRUserInfo;
 
   constructor(apiKey: string, host: string = '', version: string = '1') {
-    super(apiKey, host || MOFAPI.defaultHost, version);
+    super(apiKey, host || MFRAPI.defaultHost, version);
   }
 
   reportInstallation(uuid: string): Promise<> {
@@ -142,9 +142,9 @@ export default class MOFAPI extends GenericAPI {
   }
 }
 
-export type MOFInstallationInfo = InstallationInfo;
-export type MOFUserInfo = UserInfo;
-export type MOFAPIResponseType<T> = APIResponseType<T>;
-export type MOFDishRecognitionPredictionType = DishRecognitionPredictionType;
-export type MOFDishRecognitionType = DishRecognitionType;
-export type MOFDishRecognitionResponseType = DishRecognitionResponseType;
+export type MFRInstallationInfo = InstallationInfo;
+export type MFRUserInfo = UserInfo;
+export type MFRAPIResponseType<T> = APIResponseType<T>;
+export type MFRDishRecognitionPredictionType = DishRecognitionPredictionType;
+export type MFRDishRecognitionType = DishRecognitionType;
+export type MFRDishRecognitionResponseType = DishRecognitionResponseType;
