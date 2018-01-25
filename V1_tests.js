@@ -7,126 +7,126 @@
 
 /*
   A typical session would go (always report installation first):
-    await myOpenFoodEndpoint.reportInstallation(uuid);
+    await myFoodRepoEndpoint.reportInstallation(uuid);
 
-    await myOpenFoodEndpoint.logIn(userInfo)
+    await myFoodRepoEndpoint.logIn(userInfo)
     .catch(error => handleLoginError(error))
 
   If needed, before login, create a user like:
-    await myOpenFoodEndpoint.createUser(userInfo)
+    await myFoodRepoEndpoint.createUser(userInfo)
     .catch(error => handleCreateUserError(error))
 */
 
 import { v4 as freshUuid } from 'uuid';
 
-import MOFAPI from './V1';
+import MFRAPI from './V1';
 import type { MOFUserInfo } from './V1';
 
-let myOpenFoodEndpoint: MOFAPI;
+let myFoodRepoEndpoint: MFRAPI;
 
 // In real life, we should get our uuid from persistence
 const storedUuid = '2e58dcd7-0628-47f3-9007-8e09415f70d1';
 const uuid = storedUuid || freshUuid();
 
 // These are used for our tests
-const userInfo: MOFUserInfo = {
+const userInfo: MFRUserInfo = {
   auth_type: 'email_password',
   email: 'boris.conforty3@epfl.ch',
   password: '12345678',
 };
 
-const userInfoUpperCaseToBeTrimmed: MOFUserInfo = {
+const userInfoUpperCaseToBeTrimmed: MFRUserInfo = {
   ...userInfo,
   email: ` \t${(userInfo.email || '').toUpperCase()} `,
 };
 
-const anonymousUserInfo: MOFUserInfo = {
+const anonymousUserInfo: MFRUserInfo = {
   auth_type: 'anonymous',
 };
 
 /* $FlowForTest - Here, we put an invalid auth_type on purpose */
-const userInfoWrongAuthType: MOFUserInfo = {
+const userInfoWrongAuthType: MFRUserInfo = {
   ...userInfo,
   auth_type: 'blabla',
 };
 
-const userInfoWrongEmail: MOFUserInfo = {
+const userInfoWrongEmail: MFRUserInfo = {
   ...userInfo,
   email: 'blabla',
 };
 
-const userInfoWrongPassword: MOFUserInfo = {
+const userInfoWrongPassword: MFRUserInfo = {
   ...userInfo,
   password: 'blabla',
 };
 
-const newUserInfo: MOFUserInfo = {
+const newUserInfo: MFRUserInfo = {
   auth_type: 'email_password',
   email: `Boris.Conforty${Math.random()}@epfl.ch`,
   password: '123456a!',
 };
 
-const modifiedUserInfo: MOFUserInfo = {
+const modifiedUserInfo: MFRUserInfo = {
   first_name: 'Boris',
   last_name: 'Conforty',
 };
 
-const modifiedUserAuth1: MOFUserInfo = {
+const modifiedUserAuth1: MFRUserInfo = {
   email: 'newUserInfo.email',
   password: newUserInfo.email,
 };
 
-const modifiedUserAuth2: MOFUserInfo = {
+const modifiedUserAuth2: MFRUserInfo = {
   email: 'boris.conforty3@epfl.ch',
   password: newUserInfo.password,
 };
 
-const modifiedUserAuth3: MOFUserInfo = {
+const modifiedUserAuth3: MFRUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
 };
 
-const modifiedUserAuth4: MOFUserInfo = {
+const modifiedUserAuth4: MFRUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
   new_password: 'newUserInfo.email1',
 };
 
-const modifiedUserAuth5: MOFUserInfo = {
+const modifiedUserAuth5: MFRUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
   new_password: '12',
 };
 
-const newUserInfoWrongEmail: MOFUserInfo = {
+const newUserInfoWrongEmail: MFRUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}epfl.ch`,
   password: '123456a!',
 };
 
 // Password too short
-const newUserInfoWrongPassword: MOFUserInfo = {
+const newUserInfoWrongPassword: MFRUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '123',
 };
 
 // Password doesn't have a letter
-const newUserInfoWrongPassword2: MOFUserInfo = {
+const newUserInfoWrongPassword2: MFRUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '12345678',
 };
 
 // Password doesn't have a number
-const newUserInfoWrongPassword3: MOFUserInfo = {
+const newUserInfoWrongPassword3: MFRUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: 'abcdefgh',
 };
 
 // Password doesn't have a special character
-const newUserInfoWrongPassword4: MOFUserInfo = {
+const newUserInfoWrongPassword4: MFRUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '123456ab',
@@ -139,80 +139,80 @@ function expectedText(expected) {
 
 // Test functions
 async function reportInstallation() {
-  return myOpenFoodEndpoint.reportInstallation(uuid);
+  return myFoodRepoEndpoint.reportInstallation(uuid);
 }
 async function reportInstallationWrongUuid() {
-  return myOpenFoodEndpoint.reportInstallation('asdf');
+  return myFoodRepoEndpoint.reportInstallation('asdf');
 }
 async function loginAnonymousUser() {
-  return myOpenFoodEndpoint.logIn(anonymousUserInfo);
+  return myFoodRepoEndpoint.logIn(anonymousUserInfo);
 }
 async function loginExistingUser() {
-  return myOpenFoodEndpoint.logIn(userInfoUpperCaseToBeTrimmed);
+  return myFoodRepoEndpoint.logIn(userInfoUpperCaseToBeTrimmed);
 }
 async function loginWrongAuthType() {
-  return myOpenFoodEndpoint.logIn(userInfoWrongAuthType);
+  return myFoodRepoEndpoint.logIn(userInfoWrongAuthType);
 }
 async function loginWrongEmail() {
-  return myOpenFoodEndpoint.logIn(userInfoWrongEmail);
+  return myFoodRepoEndpoint.logIn(userInfoWrongEmail);
 }
 async function loginWrongPassword() {
-  return myOpenFoodEndpoint.logIn(userInfoWrongPassword);
+  return myFoodRepoEndpoint.logIn(userInfoWrongPassword);
 }
 async function loginNewUser() {
-  return myOpenFoodEndpoint.logIn(newUserInfo);
+  return myFoodRepoEndpoint.logIn(newUserInfo);
 }
 async function modifyUser() {
-  return myOpenFoodEndpoint.updateUser(modifiedUserInfo);
+  return myFoodRepoEndpoint.updateUser(modifiedUserInfo);
 }
 async function modifyUserLogin1() {
-  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth1);
+  return myFoodRepoEndpoint.updateUserLogin(modifiedUserAuth1);
 }
 async function modifyUserLogin2() {
-  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth2);
+  return myFoodRepoEndpoint.updateUserLogin(modifiedUserAuth2);
 }
 async function modifyUserLogin3() {
-  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth3);
+  return myFoodRepoEndpoint.updateUserLogin(modifiedUserAuth3);
 }
 async function modifyUserLogin4() {
-  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth4);
+  return myFoodRepoEndpoint.updateUserLogin(modifiedUserAuth4);
 }
 async function modifyUserLogin5() {
-  return myOpenFoodEndpoint.updateUserLogin(modifiedUserAuth5);
+  return myFoodRepoEndpoint.updateUserLogin(modifiedUserAuth5);
 }
 async function createUser() {
-  return myOpenFoodEndpoint.createUser(newUserInfo);
+  return myFoodRepoEndpoint.createUser(newUserInfo);
 }
 async function createUserWrongEmail() {
-  return myOpenFoodEndpoint.createUser(newUserInfoWrongEmail);
+  return myFoodRepoEndpoint.createUser(newUserInfoWrongEmail);
 }
 async function createUserWrongPassword() {
-  return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword);
+  return myFoodRepoEndpoint.createUser(newUserInfoWrongPassword);
 }
 async function createUserWrongPassword2() {
-  return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword2);
+  return myFoodRepoEndpoint.createUser(newUserInfoWrongPassword2);
 }
 async function createUserWrongPassword3() {
-  return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword3);
+  return myFoodRepoEndpoint.createUser(newUserInfoWrongPassword3);
 }
 async function createUserWrongPassword4() {
-  return myOpenFoodEndpoint.createUser(newUserInfoWrongPassword4);
+  return myFoodRepoEndpoint.createUser(newUserInfoWrongPassword4);
 }
 async function deleteUser() {
-  return myOpenFoodEndpoint.deleteUser();
+  return myFoodRepoEndpoint.deleteUser();
 }
 async function getUser() {
-  return myOpenFoodEndpoint.getUser();
+  return myFoodRepoEndpoint.getUser();
 }
 async function getUserWithId() {
-  const userId = myOpenFoodEndpoint.user.id;
-  return myOpenFoodEndpoint.getUser(userId);
+  const userId = myFoodRepoEndpoint.user.id;
+  return myFoodRepoEndpoint.getUser(userId);
 }
 async function getUserWithWrongId() {
-  return myOpenFoodEndpoint.getUser(982374691872364);
+  return myFoodRepoEndpoint.getUser(982374691872364);
 }
 async function logout() {
-  return myOpenFoodEndpoint.logOut();
+  return myFoodRepoEndpoint.logOut();
 }
 
 // That's where we'll store our test results
@@ -226,7 +226,7 @@ async function testFunction(f: Function, text: string, expectSuccess: boolean = 
 }
 
 export default async function runTests(apiKey: string) {
-  myOpenFoodEndpoint = new MOFAPI(apiKey);
+  myFoodRepoEndpoint = new MFRAPI(apiKey);
 
   // Should fail
   await testFunction(reportInstallationWrongUuid, 'Installation report with invalid UUID', false);
