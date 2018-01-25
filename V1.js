@@ -17,7 +17,7 @@ type InstallationInfo = {
   device_name: string,
   os_name: string,
   os_version: string,
-}
+};
 
 type UserInfo = {
   id?: number,
@@ -29,7 +29,7 @@ type UserInfo = {
   last_name?: string,
   nickname?: string,
   avatar_url?: string,
-}
+};
 
 type APIResponseType<T> = {
   data: T,
@@ -37,12 +37,12 @@ type APIResponseType<T> = {
     api_version: string,
   },
   status: number,
-}
+};
 
 type DishRecognitionPredictionType = {
   class: string,
   confidence: number,
-}
+};
 
 type DishRecognitionType = {
   image_id: number,
@@ -50,11 +50,11 @@ type DishRecognitionType = {
   image_url: string,
   predictions: [DishRecognitionPredictionType],
   status: string,
-}
+};
 
 type DishRecognitionResponseType = {
   recognition: DishRecognitionType,
-}
+};
 
 const installation: InstallationInfo = {
   app_version: DeviceInfo.getReadableVersion(),
@@ -65,7 +65,6 @@ const installation: InstallationInfo = {
 };
 
 export default class MFRAPI extends GenericAPI {
-
   static defaultHost = 'https://myfoodrepo-production.herokuapp.com';
   static revision = 'ALPHA';
 
@@ -76,7 +75,7 @@ export default class MFRAPI extends GenericAPI {
     super(apiKey, host || MFRAPI.defaultHost, version);
   }
 
-  reportInstallation(uuid: string): Promise<> {
+  reportInstallation(uuid: string): Promise<*> {
     this.uuid = uuid;
     return this.requestPatchURL(`installations/${uuid}`, { installation });
   }
@@ -132,11 +131,14 @@ export default class MFRAPI extends GenericAPI {
     return this.requestDeleteURL(`sessions/${this.sessionToken}`, {});
   }
 
-  recognizeDishImage(base64: string, mimetype: string = 'image/png'): Promise<Object> {
+  recognizeDishImage(
+    base64: string,
+    mimetype: string = 'image/png',
+  ): Promise<Object> {
     const body = {
       image: {
-        file: `data:${mimetype};base64,${base64}`
-      }
+        file: `data:${mimetype};base64,${base64}`,
+      },
     };
     return this.requestPostURL('images/recognize', body);
   }
