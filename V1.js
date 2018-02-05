@@ -66,7 +66,7 @@ const installation: InstallationInfo = {
 };
 
 export default class MFRAPI extends GenericAPI {
-  static defaultHost = 'https://myfoodrepo-production.herokuapp.com';
+  static defaultHost = 'https://myopenfood-production.herokuapp.com';
   static revision = 'ALPHA';
 
   uuid: string;
