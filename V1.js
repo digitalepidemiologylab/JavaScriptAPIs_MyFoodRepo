@@ -19,17 +19,30 @@ type InstallationInfo = {
   os_version: string,
 };
 
-type UserInfo = {
+type AuthenticatedUserInfo = {|
   id?: number,
-  auth_type?: 'email_password' | 'anonymous',
-  email?: string,
-  password?: string,
-  new_password?: string,
+  auth_type: 'email_password',
+  email: string,
+  password: string,
   first_name?: string,
   last_name?: string,
   nickname?: string,
   avatar_url?: string,
+|};
+
+type AnonymousUserInfo = {|
+  id?: number,
+  auth_type: 'anonymous',
+|};
+
+type UserInfo = AnonymousUserInfo | AuthenticatedUserInfo;
+
+const userInfo: UserInfo = {
+  auth_type: 'email_password',
+  email: 'boris.conforty3@epfl.ch',
+  password: '12345678',
 };
+if (userInfo);
 
 type APIResponseType<T> = {
   data: T,
@@ -69,7 +82,7 @@ export default class MFRAPI extends GenericAPI {
   static revision = 'ALPHA';
 
   uuid: string;
-  user: MFRUserInfo;
+  user: UserInfo;
 
   constructor(apiKey: string, host: string = '', version: string = '1') {
     super(apiKey, host || MFRAPI.defaultHost, version);
@@ -92,11 +105,11 @@ export default class MFRAPI extends GenericAPI {
     const user = id || 'me';
     return new Promise((resolve, reject) => {
       this.requestGetURL(`users/${user}`)
-      .then((response) => {
+      .then((response: APIResponseType<{ user: UserInfo }>) => {
         this.user = response.data.user;
         resolve(response);
       })
-      .catch(error => reject(error));
+      .catch((error: Error) => reject(error));
     });
   }
 
@@ -119,11 +132,11 @@ export default class MFRAPI extends GenericAPI {
         },
       };
       this.requestPostURL('sessions', sessionInfo)
-      .then((response) => {
+      .then((response: APIResponseType<{ session_token: string }>) => {
         this.sessionToken = response.data.session_token;
         resolve(response);
       })
-      .catch(error => reject(error));
+      .catch((error: Error) => reject(error));
     });
   }
 
@@ -131,10 +144,7 @@ export default class MFRAPI extends GenericAPI {
     return this.requestDeleteURL(`sessions/${this.sessionToken}`, {});
   }
 
-  recognizeDishImage(
-    base64: string,
-    mimetype: string = 'image/png',
-  ): Promise<Object> {
+  recognizeDishImage(base64: string, mimetype: string = 'image/png'): Promise<Object> {
     const body = {
       image: {
         file: `data:${mimetype};base64,${base64}`,
