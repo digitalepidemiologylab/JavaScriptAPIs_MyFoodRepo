@@ -18,7 +18,7 @@
     .catch(error => handleCreateUserError(error))
 */
 
-import { v4 as freshUuid } from 'uuid';
+import freshUuid from 'uuid/v4';
 
 import MFRAPI from './V1';
 import type { MFRUserInfo } from './V1';
