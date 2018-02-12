@@ -9,7 +9,6 @@ MyFoodRepo's API could be
 
 import GenericAPI from 'salathegroup_apis_common';
 
-// import DeviceInfo from 'react-native-device-info';
 import * as DeviceInfo from 'react-native-device-info';
 
 type InstallationInfo = {
