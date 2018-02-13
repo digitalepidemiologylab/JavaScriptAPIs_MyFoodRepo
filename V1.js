@@ -156,6 +156,8 @@ export default class MFRAPI extends GenericAPI {
 
 export type MFRInstallationInfo = InstallationInfo;
 export type MFRUserInfo = UserInfo;
+export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
+export type MFRAnonymousUserInfo = AnonymousUserInfo;
 export type MFRAPIResponseType<T> = APIResponseType<T>;
 export type MFRDishRecognitionPredictionType = DishRecognitionPredictionType;
 export type MFRDishRecognitionType = DishRecognitionType;
