@@ -21,7 +21,7 @@
 import freshUuid from 'uuid/v4';
 
 import MFRAPI from './V1';
-import type { MFRUserInfo } from './V1';
+import type { MFRUserInfo, MFRAnonymousUserInfo, MFRAuthenticatedUserInfo, MFRPartialUserInfo } from './V1';
 
 let myFoodRepoEndpoint: MFRAPI;
 
@@ -30,7 +30,7 @@ const storedUuid = '2e58dcd7-0628-47f3-9007-8e09415f70d1';
 const uuid = storedUuid || freshUuid();
 
 // These are used for our tests
-const userInfo: MFRUserInfo = {
+const userInfo: MFRAuthenticatedUserInfo = {
   auth_type: 'email_password',
   email: 'boris.conforty3@epfl.ch',
   password: '12345678',
@@ -41,7 +41,7 @@ const userInfoUpperCaseToBeTrimmed: MFRUserInfo = {
   email: ` \t${(userInfo.email || '').toUpperCase()} `,
 };
 
-const anonymousUserInfo: MFRUserInfo = {
+const anonymousUserInfo: MFRAnonymousUserInfo = {
   auth_type: 'anonymous',
 };
 
@@ -61,73 +61,73 @@ const userInfoWrongPassword: MFRUserInfo = {
   password: 'blabla',
 };
 
-const newUserInfo: MFRUserInfo = {
+const newUserInfo: MFRAuthenticatedUserInfo = {
   auth_type: 'email_password',
   email: `Boris.Conforty${Math.random()}@epfl.ch`,
   password: '123456a!',
 };
 
-const modifiedUserInfo: MFRUserInfo = {
+const modifiedUserInfo: MFRPartialUserInfo = {
   first_name: 'Boris',
   last_name: 'Conforty',
 };
 
-const modifiedUserAuth1: MFRUserInfo = {
+const modifiedUserAuth1: MFRPartialUserInfo = {
   email: 'newUserInfo.email',
   password: newUserInfo.email,
 };
 
-const modifiedUserAuth2: MFRUserInfo = {
+const modifiedUserAuth2: MFRPartialUserInfo = {
   email: 'boris.conforty3@epfl.ch',
   password: newUserInfo.password,
 };
 
-const modifiedUserAuth3: MFRUserInfo = {
+const modifiedUserAuth3: MFRPartialUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
 };
 
-const modifiedUserAuth4: MFRUserInfo = {
+const modifiedUserAuth4: MFRPartialUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
   new_password: 'newUserInfo.email1',
 };
 
-const modifiedUserAuth5: MFRUserInfo = {
+const modifiedUserAuth5: MFRPartialUserInfo = {
   email: 'boris.conforty3999@epfl.ch',
   password: newUserInfo.password,
   new_password: '12',
 };
 
-const newUserInfoWrongEmail: MFRUserInfo = {
+const newUserInfoWrongEmail: MFRPartialUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}epfl.ch`,
   password: '123456a!',
 };
 
 // Password too short
-const newUserInfoWrongPassword: MFRUserInfo = {
+const newUserInfoWrongPassword: MFRAuthenticatedUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '123',
 };
 
 // Password doesn't have a letter
-const newUserInfoWrongPassword2: MFRUserInfo = {
+const newUserInfoWrongPassword2: MFRAuthenticatedUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '12345678',
 };
 
 // Password doesn't have a number
-const newUserInfoWrongPassword3: MFRUserInfo = {
+const newUserInfoWrongPassword3: MFRAuthenticatedUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: 'abcdefgh',
 };
 
 // Password doesn't have a special character
-const newUserInfoWrongPassword4: MFRUserInfo = {
+const newUserInfoWrongPassword4: MFRAuthenticatedUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}@epfl.ch`,
   password: '123456ab',
