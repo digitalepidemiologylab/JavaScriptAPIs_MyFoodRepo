@@ -20,8 +20,8 @@ type InstallationInfo = {
 };
 
 type AuthenticatedUserInfo = {|
-  id?: number,
   auth_type: 'email_password',
+  id?: number,
   email: string,
   password: string,
   first_name?: string,
@@ -31,8 +31,8 @@ type AuthenticatedUserInfo = {|
 |};
 
 type AnonymousUserInfo = {|
-  id?: number,
   auth_type: 'anonymous',
+  id?: number,
 |};
 
 type UserInfo = AnonymousUserInfo | AuthenticatedUserInfo;
