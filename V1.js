@@ -37,6 +37,11 @@ type AnonymousUserInfo = {|
 
 type UserInfo = AnonymousUserInfo | AuthenticatedUserInfo;
 
+type PartialUserInfo = ($Shape<AnonymousUserInfo> | $Shape<AuthenticatedUserInfo>) & {
+  auth_type?: string,
+  new_password?: string,
+};
+
 const userInfo: UserInfo = {
   auth_type: 'email_password',
   email: 'boris.conforty3@epfl.ch',
@@ -113,12 +118,12 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  updateUser(user: UserInfo): Promise<Object> {
+  updateUser(user: PartialUserInfo): Promise<Object> {
     const id = user.id || 'me';
     return this.requestPatchURL(`users/${id}`, { user });
   }
 
-  updateUserLogin(user: UserInfo): Promise<Object> {
+  updateUserLogin(user: PartialUserInfo): Promise<Object> {
     const id = user.id || 'me';
     return this.requestPatchURL(`users/${id}/update_email_password`, { user });
   }
@@ -158,6 +163,7 @@ export type MFRInstallationInfo = InstallationInfo;
 export type MFRUserInfo = UserInfo;
 export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
 export type MFRAnonymousUserInfo = AnonymousUserInfo;
+export type MFRPartialUserInfo = PartialUserInfo;
 export type MFRAPIResponseType<T> = APIResponseType<T>;
 export type MFRDishRecognitionPredictionType = DishRecognitionPredictionType;
 export type MFRDishRecognitionType = DishRecognitionType;
