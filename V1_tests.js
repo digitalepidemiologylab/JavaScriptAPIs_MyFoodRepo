@@ -21,7 +21,12 @@
 import freshUuid from 'uuid/v4';
 
 import MFRAPI from './V1';
-import type { MFRUserInfo, MFRAnonymousUserInfo, MFRAuthenticatedUserInfo, MFRPartialUserInfo } from './V1';
+import type {
+  MFRUserInfo,
+  MFRAnonymousUserInfo,
+  MFRAuthenticatedUserInfo,
+  MFRPartialUserInfo,
+} from './V1';
 
 let myFoodRepoEndpoint: MFRAPI;
 
@@ -99,7 +104,7 @@ const modifiedUserAuth5: MFRPartialUserInfo = {
   new_password: '12',
 };
 
-const newUserInfoWrongEmail: MFRPartialUserInfo = {
+const newUserInfoWrongEmail: MFRAuthenticatedUserInfo = {
   auth_type: 'email_password',
   email: `boris.conforty${Math.random()}epfl.ch`,
   password: '123456a!',
@@ -219,22 +224,35 @@ async function logout() {
 // That's where we'll store our test results
 const testResults: string[] = [];
 
-async function testFunction(f: () => Promise<*>, text: string, expectSuccess: boolean = true) {
+async function testFunction(
+  f: () => Promise<*>,
+  text: string,
+  expectSuccess: boolean = true,
+) {
   const t = new Date();
   await f()
   .then((response: Object) =>
     testResults.push(
-      `${text}\n${expectedText(expectSuccess)} SUCCESS\nDone in ${new Date() - t} ms\n${JSON.stringify(response)}`,
+      `${text}\n${expectedText(expectSuccess)} SUCCESS\nDone in ${new Date() -
+          t} ms\n${JSON.stringify(response)}`,
     ))
   .catch((error: Error) =>
-    testResults.push(`${text}\n${expectedText(!expectSuccess)} FAILURE\nDone in ${new Date() - t} ms\n${error}`));
+    testResults.push(
+      `${text}\n${expectedText(
+        !expectSuccess,
+      )} FAILURE\nDone in ${new Date() - t} ms\n${JSON.stringify(error)}`,
+    ));
 }
 
 export default async function runTests(apiKey: string) {
   myFoodRepoEndpoint = new MFRAPI(apiKey);
 
   // Should fail
-  await testFunction(reportInstallationWrongUuid, 'Installation report with invalid UUID', false);
+  await testFunction(
+    reportInstallationWrongUuid,
+    'Installation report with invalid UUID',
+    false,
+  );
 
   // We must first report our installation details.
   // Should be fine since our UUID is valid
@@ -265,11 +283,31 @@ export default async function runTests(apiKey: string) {
   await testFunction(loginWrongEmail, 'Login with wrong email', false);
   await testFunction(loginWrongPassword, 'Login with wrong password', false);
 
-  await testFunction(createUserWrongEmail, 'Create user with invalid email', false);
-  await testFunction(createUserWrongPassword, 'Create user with invalid password', false);
-  await testFunction(createUserWrongPassword2, 'Create user with invalid password - 2', false);
-  await testFunction(createUserWrongPassword3, 'Create user with invalid password - 3', false);
-  await testFunction(createUserWrongPassword4, 'Create user with invalid password - 4', false);
+  await testFunction(
+    createUserWrongEmail,
+    'Create user with invalid email',
+    false,
+  );
+  await testFunction(
+    createUserWrongPassword,
+    'Create user with invalid password',
+    false,
+  );
+  await testFunction(
+    createUserWrongPassword2,
+    'Create user with invalid password - 2',
+    false,
+  );
+  await testFunction(
+    createUserWrongPassword3,
+    'Create user with invalid password - 3',
+    false,
+  );
+  await testFunction(
+    createUserWrongPassword4,
+    'Create user with invalid password - 4',
+    false,
+  );
 
   // Should fail, since the user doesn't exist yet
   await testFunction(loginNewUser, 'Non-existing user login', false);
