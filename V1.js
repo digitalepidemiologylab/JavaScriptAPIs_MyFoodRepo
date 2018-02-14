@@ -93,6 +93,19 @@ type APIError = {
 
 type ErrorHandler = (error: HttpError) => void;
 
+function simplifiedErrorReject(reject: (error: Object) => void): ErrorHandler {
+  return function errorHandler(error: HttpError) {
+    try {
+      const response: { error: APIError } = JSON.parse(
+        error.request.responseText,
+      );
+      reject(response.error);
+    } catch (e) {
+      reject(error);
+    }
+  };
+}
+
 export default class MFRAPI extends GenericAPI {
   static defaultHost = 'https://myopenfood-production.herokuapp.com';
   static revision = 'ALPHA';
@@ -152,12 +165,16 @@ export default class MFRAPI extends GenericAPI {
         this.sessionToken = response.data.session_token;
         resolve(response);
       })
-      .catch((error: Error) => reject(error));
+      .catch(simplifiedErrorReject(reject));
     });
   }
 
-    return this.requestDeleteURL(`sessions/${this.sessionToken}`, {});
   logOut(): Promise<APIResponseType<LogoutResponse>> {
+    return new Promise((resolve, reject) => {
+      this.requestDeleteURL(`sessions/${this.sessionToken}`, {})
+      .then(resolve)
+      .catch(simplifiedErrorReject(reject));
+    });
   }
 
   recognizeDishImage(base64: string, mimetype: string = 'image/png'): Promise<Object> {
