@@ -7,6 +7,7 @@ MyFoodRepo's API could be
 
 */
 
+import { HttpError } from 'salathegroup_apis_common/ajaxhelpers';
 import GenericAPI from 'salathegroup_apis_common';
 
 import * as DeviceInfo from 'react-native-device-info';
@@ -38,17 +39,9 @@ type AnonymousUserInfo = {|
 
 type UserInfo = AnonymousUserInfo | AuthenticatedUserInfo;
 
-type PartialUserInfo = ($Shape<AnonymousUserInfo> | $Shape<AuthenticatedUserInfo>) & {
-  auth_type?: string,
-  new_password?: string,
-};
-
-const userInfo: UserInfo = {
-  auth_type: 'email_password',
-  email: 'boris.conforty3@epfl.ch',
-  password: '12345678',
-};
-if (userInfo);
+type PartialUserInfo =
+  | $Shape<AnonymousUserInfo>
+  | $Shape<AuthenticatedUserInfo>;
 
 type APIResponseType<T> = {
   data: T,
@@ -56,6 +49,14 @@ type APIResponseType<T> = {
     api_version: string,
   },
   status: number,
+};
+
+type LoginResponse = {
+  session_token: string,
+};
+
+type LogoutResponse = {
+  session_token: string,
 };
 
 type DishRecognitionPredictionType = {
@@ -83,6 +84,15 @@ const installation: InstallationInfo = {
   os_version: DeviceInfo.getSystemVersion(),
 };
 
+type APIError = {
+  type: string,
+  code: string,
+  message: string,
+  reason: string,
+};
+
+type ErrorHandler = (error: HttpError) => void;
+
 export default class MFRAPI extends GenericAPI {
   static defaultHost = 'https://myopenfood-production.herokuapp.com';
   static revision = 'ALPHA';
@@ -107,7 +117,7 @@ export default class MFRAPI extends GenericAPI {
     return this.requestDeleteURL('users/me');
   }
 
-  getUser(id?: number): Promise<Object> {
+  getUser(id?: number): Promise<APIResponseType<{ user: UserInfo }>> {
     const user = id || 'me';
     return new Promise((resolve, reject) => {
       this.requestGetURL(`users/${user}`)
@@ -129,7 +139,7 @@ export default class MFRAPI extends GenericAPI {
     return this.requestPatchURL(`users/${id}/update_email_password`, { user });
   }
 
-  logIn(user: UserInfo): Promise<Object> {
+  logIn(user: UserInfo): Promise<APIResponseType<LoginResponse>> {
     return new Promise((resolve, reject) => {
       const sessionInfo = {
         user,
@@ -138,7 +148,7 @@ export default class MFRAPI extends GenericAPI {
         },
       };
       this.requestPostURL('sessions', sessionInfo)
-      .then((response: APIResponseType<{ session_token: string }>) => {
+      .then((response: APIResponseType<LoginResponse>) => {
         this.sessionToken = response.data.session_token;
         resolve(response);
       })
@@ -146,8 +156,8 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  logOut(): Promise<Object> {
     return this.requestDeleteURL(`sessions/${this.sessionToken}`, {});
+  logOut(): Promise<APIResponseType<LogoutResponse>> {
   }
 
   recognizeDishImage(base64: string, mimetype: string = 'image/png'): Promise<Object> {
@@ -166,6 +176,7 @@ export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
 export type MFRAnonymousUserInfo = AnonymousUserInfo;
 export type MFRPartialUserInfo = PartialUserInfo;
 export type MFRAPIResponseType<T> = APIResponseType<T>;
+export type MFRAPIError = APIError;
 export type MFRDishRecognitionPredictionType = DishRecognitionPredictionType;
 export type MFRDishRecognitionType = DishRecognitionType;
 export type MFRDishRecognitionResponseType = DishRecognitionResponseType;
