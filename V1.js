@@ -123,7 +123,13 @@ export default class MFRAPI extends GenericAPI {
   }
 
   createUser(user: UserInfo): Promise<Object> {
-    return this.requestPostURL('users', { user });
+    return new Promise((resolve, reject) => {
+      this.requestPostURL('users', { user })
+      .then((response: APIResponseType<LoginResponse>) => {
+        resolve(response);
+      })
+      .catch(simplifiedErrorReject(reject));
+    });
   }
 
   deleteUser(): Promise<Object> {
