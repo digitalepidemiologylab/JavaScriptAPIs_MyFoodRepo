@@ -24,6 +24,7 @@ type AuthenticatedUserInfo = {|
   id?: number,
   email: string,
   password: string,
+  new_password?: string,
   first_name?: string,
   last_name?: string,
   nickname?: string,
