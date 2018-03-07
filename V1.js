@@ -20,28 +20,76 @@ type InstallationInfo = {
   os_version: string,
 };
 
-type AuthenticatedUserInfo = {|
-  auth_type: 'email_password',
+type TAttribute = {|
+  id: number,
+|};
+
+/*
+type TAttributeDestroy = {|
+  ...TAttribute,
+  ...{| _destroy: boolean |},
+|};
+
+type TNewHistoricalData<T> = {|
+  ...{| date: Date |},
+  ...T,
+|};
+*/
+
+type TExistingHistoricalData<T> = {|
+  ...TAttribute,
+  ...{| date: Date |},
+  ...T,
+|};
+
+type THistoricalData<T> =
+  // | TNewHistoricalData<T>
+  TExistingHistoricalData<T>;
+// | TAttributeDestroy;
+
+type TGender = 'male' | 'female';
+
+type TWeightData = THistoricalData<{| weight: number |}>;
+
+type CommonUserInfo = {|
   id?: number,
-  email: string,
-  password: string,
-  new_password?: string,
   first_name?: string,
   last_name?: string,
   nickname?: string,
   avatar_url?: string,
+  weights?: Array<TWeightData>,
+  height?: number,
+  gender?: TGender,
+  date_of_birth?: Date,
+|};
+
+type AuthenticatedLoginInfo = {|
+  auth_type: 'email_password',
+  email: string,
+  password: string,
+  new_password?: string,
+|};
+
+type AnonymousLoginInfo = {|
+  auth_type: 'anonymous',
+|};
+
+type AuthenticatedUserInfo = {|
+  ...AuthenticatedLoginInfo,
+  ...CommonUserInfo,
 |};
 
 type AnonymousUserInfo = {|
-  auth_type: 'anonymous',
-  id?: number,
+  ...AnonymousLoginInfo,
+  ...CommonUserInfo,
 |};
 
 type UserInfo = AnonymousUserInfo | AuthenticatedUserInfo;
 
 type PartialUserInfo =
-  | $Shape<AnonymousUserInfo>
-  | $Shape<AuthenticatedUserInfo>;
+  | $Shape<AnonymousLoginInfo>
+  | $Shape<AuthenticatedLoginInfo>
+  | $Shape<CommonUserInfo>;
 
 type APIResponseType<T> = {
   data: T,
@@ -149,12 +197,12 @@ export default class MFRAPI extends GenericAPI {
   }
 
   updateUser(user: PartialUserInfo): Promise<Object> {
-    const id = user.id || 'me';
+    const id: string = typeof user.id === 'number' ? `${user.id}` : 'me';
     return this.requestPatchURL(`users/${id}`, { user });
   }
 
   updateUserLogin(user: PartialUserInfo): Promise<Object> {
-    const id = user.id || 'me';
+    const id = typeof user.id === 'number' ? user.id : 'me';
     return this.requestPatchURL(`users/${id}/update_email_password`, { user });
   }
 
@@ -198,9 +246,13 @@ export default class MFRAPI extends GenericAPI {
 
 export type MFRInstallationInfo = InstallationInfo;
 export type MFRUserInfo = UserInfo;
+export type MFRAuthenticatedLoginInfo = AuthenticatedLoginInfo;
+export type MFRAnonymousLoginInfo = AnonymousLoginInfo;
 export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
 export type MFRAnonymousUserInfo = AnonymousUserInfo;
 export type MFRPartialUserInfo = PartialUserInfo;
+export type MFRGender = TGender;
+export type MFRHistoricalData = THistoricalData<*>;
 export type MFRAPIResponseType<T> = APIResponseType<T>;
 export type MFRAPIError = APIError;
 export type MFRDishRecognitionPredictionType = DishRecognitionPredictionType;
