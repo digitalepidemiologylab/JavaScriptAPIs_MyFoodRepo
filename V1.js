@@ -159,9 +159,8 @@ export default class MFRAPI extends GenericAPI {
     super(apiKey, host || MFRAPI.defaultHost, version);
   }
 
-  reportInstallation(uuid: string): Promise<*> {
+  reportInstallation(uuid: string, timeout: number = 0): Promise<*> {
     this.uuid = uuid;
-    return this.requestPatchURL(`installations/${uuid}`, { installation });
     if (!installation) {
       installation = {
         app_version: DeviceInfo.getReadableVersion(),
@@ -171,11 +170,16 @@ export default class MFRAPI extends GenericAPI {
         os_version: DeviceInfo.getSystemVersion(),
       };
     }
+    return this.requestPatchURL(
+      `installations/${uuid}`,
+      { installation },
+      timeout,
+    );
   }
 
-  createUser(user: UserInfo): Promise<Object> {
+  createUser(user: UserInfo, timeout: number = 0): Promise<Object> {
     return new Promise((resolve, reject) => {
-      this.requestPostURL('users', { user })
+      this.requestPostURL('users', { user }, timeout)
       .then((response: APIResponseType<LoginResponse>) => {
         resolve(response);
       })
@@ -183,14 +187,17 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  deleteUser(): Promise<Object> {
-    return this.requestDeleteURL('users/me');
+  deleteUser(timeout: number = 0): Promise<Object> {
+    return this.requestDeleteURL('users/me', null, timeout);
   }
 
-  getUser(id?: number): Promise<APIResponseType<{ user: UserInfo }>> {
+  getUser(
+    id?: number,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ user: UserInfo }>> {
     const user = id || 'me';
     return new Promise((resolve, reject) => {
-      this.requestGetURL(`users/${user}`)
+      this.requestGetURL(`users/${user}`, timeout)
       .then((response: APIResponseType<{ user: UserInfo }>) => {
         this.user = response.data.user;
         resolve(response);
@@ -199,17 +206,24 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  updateUser(user: PartialUserInfo): Promise<Object> {
+  updateUser(user: PartialUserInfo, timeout: number = 0): Promise<Object> {
     const id: string = typeof user.id === 'number' ? `${user.id}` : 'me';
-    return this.requestPatchURL(`users/${id}`, { user });
+    return this.requestPatchURL(`users/${id}`, { user }, timeout);
   }
 
-  updateUserLogin(user: PartialUserInfo): Promise<Object> {
+  updateUserLogin(user: PartialUserInfo, timeout: number = 0): Promise<Object> {
     const id = typeof user.id === 'number' ? user.id : 'me';
-    return this.requestPatchURL(`users/${id}/update_email_password`, { user });
+    return this.requestPatchURL(
+      `users/${id}/update_email_password`,
+      { user },
+      timeout,
+    );
   }
 
-  logIn(user: UserInfo): Promise<APIResponseType<LoginResponse>> {
+  logIn(
+    user: UserInfo,
+    timeout: number = 0,
+  ): Promise<APIResponseType<LoginResponse>> {
     return new Promise((resolve, reject) => {
       const sessionInfo = {
         user,
@@ -217,7 +231,7 @@ export default class MFRAPI extends GenericAPI {
           uuid: this.uuid,
         },
       };
-      this.requestPostURL('sessions', sessionInfo)
+      this.requestPostURL('sessions', sessionInfo, timeout)
       .then((response: APIResponseType<LoginResponse>) => {
         this.sessionToken = response.data.session_token;
         resolve(response);
@@ -226,9 +240,9 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  logOut(): Promise<APIResponseType<LogoutResponse>> {
+  logOut(timeout: number = 0): Promise<APIResponseType<LogoutResponse>> {
     return new Promise((resolve, reject) => {
-      this.requestDeleteURL(`sessions/${this.sessionToken}`, {})
+      this.requestDeleteURL(`sessions/${this.sessionToken}`, {}, timeout)
       .then(resolve)
       .catch(simplifiedErrorReject(reject));
     });
@@ -237,13 +251,14 @@ export default class MFRAPI extends GenericAPI {
   recognizeDishImage(
     base64: string,
     mimetype: string = 'image/png',
+    timeout: number = 0,
   ): Promise<Object> {
     const body = {
       image: {
         file: `data:${mimetype};base64,${base64}`,
       },
     };
-    return this.requestPostURL('images/recognize', body);
+    return this.requestPostURL('images/recognize', body, timeout);
   }
 }
 
