@@ -124,13 +124,7 @@ type DishRecognitionResponseType = {
   recognition: DishRecognitionType,
 };
 
-const installation: InstallationInfo = {
-  app_version: DeviceInfo.getReadableVersion(),
-  device_vendor: DeviceInfo.getManufacturer(),
-  device_name: DeviceInfo.getModel(),
-  os_name: DeviceInfo.getSystemName(),
-  os_version: DeviceInfo.getSystemVersion(),
-};
+let installation: InstallationInfo;
 
 type APIError = {
   type: string,
@@ -168,6 +162,15 @@ export default class MFRAPI extends GenericAPI {
   reportInstallation(uuid: string): Promise<*> {
     this.uuid = uuid;
     return this.requestPatchURL(`installations/${uuid}`, { installation });
+    if (!installation) {
+      installation = {
+        app_version: DeviceInfo.getReadableVersion(),
+        device_vendor: DeviceInfo.getManufacturer(),
+        device_name: DeviceInfo.getModel(),
+        os_name: DeviceInfo.getSystemName(),
+        os_version: DeviceInfo.getSystemVersion(),
+      };
+    }
   }
 
   createUser(user: UserInfo): Promise<Object> {
