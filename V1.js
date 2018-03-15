@@ -116,7 +116,7 @@ type DishRecognitionType = {
   image_id: number,
   image_recognition_id: string,
   image_url: string,
-  predictions: [DishRecognitionPredictionType],
+  predictions: Array<DishRecognitionPredictionType>,
   status: string,
 };
 
