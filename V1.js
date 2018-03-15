@@ -152,6 +152,11 @@ export default class MFRAPI extends GenericAPI {
   static defaultHost = 'https://myopenfood-production.herokuapp.com';
   static revision = 'ALPHA';
 
+  static defaultRecognitionInputSize = {
+    width: 256,
+    height: 256,
+  };
+
   uuid: string;
   user: UserInfo;
 
