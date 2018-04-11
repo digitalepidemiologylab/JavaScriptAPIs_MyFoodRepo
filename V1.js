@@ -10,7 +10,7 @@ MyFoodRepo's API could be
 import { HttpError } from 'salathegroup_apis_common/ajaxhelpers';
 import GenericAPI from 'salathegroup_apis_common';
 
-import * as DeviceInfo from 'react-native-device-info';
+import DeviceInfo from 'react-native-device-info';
 
 type InstallationInfo = {
   app_version: string,
