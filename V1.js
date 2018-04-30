@@ -131,6 +131,15 @@ type APIError = {
   code: string,
   message: string,
   reason: string,
+  details?: {
+    [keys: string]: {
+      issues: Array<{
+        count?: number,
+        code: string,
+        message: string,
+      }>,
+    },
+  },
 };
 
 type ErrorHandler = (error: HttpError) => void;
