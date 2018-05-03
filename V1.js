@@ -213,7 +213,7 @@ export default class MFRAPI extends GenericAPI {
     return new Promise((resolve, reject) => {
       this.requestGetURL(`users/${user}`, timeout)
       .then((response: APIResponseType<{ user: UserInfo }>) => {
-        this.user = response.data.user;
+        // this.user = response.data.user;
         resolve(response);
       })
       .catch((error: Error) => reject(error));
