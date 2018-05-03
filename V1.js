@@ -144,6 +144,13 @@ type APIError = {
 
 type ErrorHandler = (error: HttpError) => void;
 
+type Dish = {
+  id: number,
+  eaten_at: Date,
+};
+
+type Dishes = Dish[];
+
 function simplifiedErrorReject(reject: (error: Object) => void): ErrorHandler {
   return function errorHandler(error: HttpError) {
     try {
@@ -273,6 +280,20 @@ export default class MFRAPI extends GenericAPI {
       },
     };
     return this.requestPostURL('images/recognize', body, timeout);
+  }
+
+  getDishes(
+    user_id?: number,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ dishes: Dishes }>> {
+    const user = user_id || 'me';
+    return new Promise((resolve, reject) => {
+      this.requestGetURL(`users/${user}/dishes`, timeout)
+      .then((response: APIResponseType<{ dishes: Dishes }>) => {
+        resolve(response);
+      })
+      .catch((error: Error) => reject(error));
+    });
   }
 }
 
