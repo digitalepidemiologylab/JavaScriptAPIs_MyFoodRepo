@@ -59,7 +59,7 @@ type CommonUserInfo = {|
   avatar_url?: string,
   weights?: Array<TWeightData>,
   height?: number,
-  gender?: TGender,
+  sex?: TGender,
   date_of_birth?: Date,
 |};
 
