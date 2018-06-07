@@ -152,9 +152,9 @@ type Dish = {
 type Dishes = Dish[];
 
 type Subject = {
-  active: boolean,
   id: number,
   user_id: number,
+  user_attached: boolean,
   user_key: string,
   expiration_at: ?string,
   study_name: string,
