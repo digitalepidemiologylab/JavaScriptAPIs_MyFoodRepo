@@ -283,10 +283,10 @@ export default class MFRAPI extends GenericAPI {
   }
 
   getDishes(
-    user_id?: number,
+    userId?: number,
     timeout: number = 0,
   ): Promise<APIResponseType<{ dishes: Dishes }>> {
-    const user = user_id || 'me';
+    const user = userId || 'me';
     return new Promise((resolve, reject) => {
       this.requestGetURL(`users/${user}/dishes`, timeout)
       .then((response: APIResponseType<{ dishes: Dishes }>) => {
