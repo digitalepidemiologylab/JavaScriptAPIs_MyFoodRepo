@@ -374,6 +374,7 @@ export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
 export type MFRAnonymousUserInfo = AnonymousUserInfo;
 export type MFRPartialUserInfo = PartialUserInfo;
 export type MFRGender = TGender;
+export type MFRSubject = Subject;
 export type MFRHistoricalData = THistoricalData<*>;
 export type MFRAPIResponseType<T> = APIResponseType<T>;
 export type MFRAPIError = APIError;
