@@ -151,6 +151,22 @@ type Dish = {
 
 type Dishes = Dish[];
 
+type Subject = {
+  id: 1,
+  active: boolean,
+  user_id: number,
+  user_key: string,
+  expiration_at: ?string,
+  study_name: string,
+  study_logo_uri: ?string,
+  cohort_name: string,
+  cohort_logo_uri: ?string,
+  created_at: string,
+  updated_at: string,
+};
+
+type Subjects = Subject[];
+
 function simplifiedErrorReject(reject: (error: Object) => void): ErrorHandler {
   return function errorHandler(error: HttpError) {
     try {
@@ -293,6 +309,59 @@ export default class MFRAPI extends GenericAPI {
         resolve(response);
       })
       .catch((error: Error) => reject(error));
+    });
+  }
+
+  getSubjects(
+    userId?: number,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+    const user = userId || 'me';
+    return new Promise((resolve, reject) => {
+      this.requestGetURL(`users/${user}/subjects`, timeout)
+      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+        resolve(response);
+      })
+      .catch((error: Error) => reject(error));
+    });
+  }
+
+  addSubject(
+    subjectKey: string,
+    userId?: number,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+    const user = userId || 'me';
+    return new Promise((resolve, reject) => {
+      const info = {
+        subject: {
+          key: subjectKey,
+        },
+      };
+      this.requestPostURL(`users/${user}/subjects`, info, timeout)
+      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+        resolve(response);
+      })
+      .catch(simplifiedErrorReject(reject));
+    });
+  }
+
+  removeSubject(
+    subjectId: number,
+    userId?: number,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+    const user = userId || 'me';
+    return new Promise((resolve, reject) => {
+      this.requestDeleteURL(
+        `users/${user}/subjects/${subjectId}`,
+        null,
+        timeout,
+      )
+      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+        resolve(response);
+      })
+      .catch(simplifiedErrorReject(reject));
     });
   }
 }
