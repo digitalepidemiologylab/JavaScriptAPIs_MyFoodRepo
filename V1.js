@@ -340,7 +340,7 @@ export default class MFRAPI extends GenericAPI {
   }
 
   getDishes(
-    userId?: number,
+    userId?: ?number,
     timeout: number = 0,
   ): Promise<APIResponseType<{ dishes: Dishes }>> {
     const user = userId || 'me';
@@ -354,7 +354,7 @@ export default class MFRAPI extends GenericAPI {
   }
 
   getSubjects(
-    userId?: number,
+    userId?: ?number,
     timeout: number = 0,
   ): Promise<APIResponseType<{ subjects: Subjects }>> {
     const user = userId || 'me';
@@ -369,7 +369,7 @@ export default class MFRAPI extends GenericAPI {
 
   addSubject(
     subjectKey: string,
-    userId?: number,
+    userId?: ?number,
     timeout: number = 0,
   ): Promise<APIResponseType<{ subjects: Subjects }>> {
     const user = userId || 'me';
@@ -389,7 +389,7 @@ export default class MFRAPI extends GenericAPI {
 
   removeSubject(
     subjectId: number,
-    userId?: number,
+    userId?: ?number,
     timeout: number = 0,
   ): Promise<APIResponseType<{ subjects: Subjects }>> {
     const user = userId || 'me';
