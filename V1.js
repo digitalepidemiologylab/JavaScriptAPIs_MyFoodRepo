@@ -353,6 +353,21 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
+  addDish(
+    userId: ?number,
+    dish: PostDish,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ dish: Dish }>> {
+    const user = userId || 'me';
+    return new Promise((resolve, reject) => {
+      this.requestPostURL(`users/${user}/dishes`, { dish }, timeout)
+      .then((response: APIResponseType<{ dish: Dish }>) => {
+        resolve(response);
+      })
+      .catch((error: Error) => reject(error));
+    });
+  }
+
   getSubjects(
     userId?: ?number,
     timeout: number = 0,
