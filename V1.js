@@ -144,9 +144,50 @@ type APIError = {
 
 type ErrorHandler = (error: HttpError) => void;
 
+type DishComment = {
+  id: number,
+  user: { display_name: string, avatar_url: string },
+  message: string,
+  created_at: Date,
+  updated_at: Date,
+};
+
+type MediaVariant = {
+  name: 'original' | 'thumb',
+  url: string,
+};
+
+type PostMedia = {
+  type: 'ImageMedia',
+  file: string,
+};
+
+type PostDish = {
+  name: string,
+  note: string,
+  eaten_at: string,
+  eaten_at_utc_offset: number,
+  media: PostMedia[],
+};
+
+type Media = {
+  type: 'ImageMedia',
+  id: number,
+  variants?: MediaVariant[],
+};
+
 type Dish = {
   id: number,
+  user_id: number,
+  name: string,
+  note: string,
+  status: string,
   eaten_at: Date,
+  eaten_at_utc_offset: number,
+  media: Media[],
+  comments: DishComment[],
+  created_at: string,
+  updated_at: string,
 };
 
 type Dishes = Dish[];
@@ -368,6 +409,9 @@ export default class MFRAPI extends GenericAPI {
 
 export type MFRInstallationInfo = InstallationInfo;
 export type MFRUserInfo = UserInfo;
+export type MFRDish = Dish;
+export type MFRPostDish = PostDish;
+export type MFRDishes = Dishes;
 export type MFRAuthenticatedLoginInfo = AuthenticatedLoginInfo;
 export type MFRAnonymousLoginInfo = AnonymousLoginInfo;
 export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
