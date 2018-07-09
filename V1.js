@@ -368,6 +368,21 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
+  removeDish(
+    userId: ?number,
+    dishId: number,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ dish: Dish }>> {
+    const user = userId || 'me';
+    return new Promise((resolve, reject) => {
+      this.requestDeleteURL(`users/${user}/dishes/${dishId}`, null, timeout)
+      .then((response: APIResponseType<{ dish: Dish }>) => {
+        resolve(response);
+      })
+      .catch((error: Error) => reject(error));
+    });
+  }
+
   getSubjects(
     userId?: ?number,
     timeout: number = 0,
