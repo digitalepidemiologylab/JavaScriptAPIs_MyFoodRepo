@@ -173,7 +173,7 @@ type PostDish = {
 type Media = {
   type: 'ImageMedia',
   id: number,
-  variants?: MediaVariant[],
+  variants: MediaVariant[],
 };
 
 type Dish = {
