@@ -388,6 +388,14 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
+  updateDish(dish: $Shape<Dish>, timeout: number = 0): Promise<Object> {
+    return this.requestPatchURL(
+      `dishes/${dish.id}`,
+      { dish: { ...dish, id: undefined } },
+      timeout,
+    );
+  }
+
   getSubjects(
     userId?: ?number,
     timeout: number = 0,
