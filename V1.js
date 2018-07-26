@@ -334,10 +334,10 @@ export default class MFRAPI extends GenericAPI {
 
   recognizeDishImage(
     base64: string,
-    mimetype: string = 'image/png',
+    mimetype: ?string,
     timeout: number = 0,
   ): Promise<Object> {
-    const uri = `data:${mimetype};base64,${base64}`;
+    const uri = `data:${mimetype || 'image/png'};base64,${base64}`;
     return this.recognizeDishImageURI(uri, timeout);
   }
 
