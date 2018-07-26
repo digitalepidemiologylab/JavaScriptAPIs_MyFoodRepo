@@ -234,8 +234,13 @@ export default class MFRAPI extends GenericAPI {
   uuid: string;
   user: UserInfo;
 
-  constructor(apiKey: string, host: string = '', version: string = '1') {
-    super(apiKey, host || MFRAPI.defaultHost, version);
+  constructor(
+    apiKey: string,
+    host: string = '',
+    version: string = '1',
+    compress: boolean = true,
+  ) {
+    super(apiKey, host || MFRAPI.defaultHost, version, compress);
   }
 
   reportInstallation(uuid: string, timeout: number = 0): Promise<*> {
