@@ -113,6 +113,7 @@ type DishRecognitionPredictionType = {
 };
 
 type DishRecognitionType = {
+  ml_api_version: string,
   image_id: number,
   image_recognition_id: string,
   image_url: string,
