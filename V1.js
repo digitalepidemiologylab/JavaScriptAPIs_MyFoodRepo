@@ -164,6 +164,8 @@ type PostMedia = {
 };
 
 type PostDish = {
+  id: number,
+  submitting?: boolean,
   name: string,
   note: string,
   eaten_at: string,
@@ -179,6 +181,7 @@ type Media = {
 
 type Dish = {
   id: number,
+  _destroyed?: boolean, // eslint-disable-line no-underscore-dangle
   user_id: number,
   name: string,
   note: string,
