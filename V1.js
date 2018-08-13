@@ -355,11 +355,20 @@ export default class MFRAPI extends GenericAPI {
 
   getDishes(
     userId: ?number,
+    lastSync: ?(Date | string),
     timeout: number = 0,
   ): Promise<APIResponseType<{ dishes: Dishes }>> {
     const user = userId || 'me';
+    let lastSyncFilter;
+    if (typeof lastSync === 'string') {
+      lastSyncFilter = `?last_sync_at=${lastSync}`;
+    } else if (lastSync instanceof Date) {
+      lastSyncFilter = lastSync.toISOString();
+    } else {
+      lastSyncFilter = '';
+    }
     return new Promise((resolve, reject) => {
-      this.requestGetURL(`users/${user}/dishes`, timeout)
+      this.requestGetURL(`users/${user}/dishes${lastSyncFilter}`, timeout)
       .then((response: APIResponseType<{ dishes: Dishes }>) => {
         resolve(response);
       })
