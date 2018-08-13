@@ -354,7 +354,7 @@ export default class MFRAPI extends GenericAPI {
   }
 
   getDishes(
-    userId?: ?number,
+    userId: ?number,
     timeout: number = 0,
   ): Promise<APIResponseType<{ dishes: Dishes }>> {
     const user = userId || 'me';
