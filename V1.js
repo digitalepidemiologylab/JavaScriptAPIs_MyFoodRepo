@@ -8,7 +8,7 @@ MyFoodRepo's API could be
 */
 
 import { HttpError } from 'salathegroup_apis_common/src/ajaxhelpers';
-import GenericAPI from 'salathegroup_apis_common';
+import GenericAPI, { type TCompressionType } from 'salathegroup_apis_common';
 
 import DeviceInfo from 'react-native-device-info';
 
@@ -241,7 +241,7 @@ export default class MFRAPI extends GenericAPI {
     apiKey: string,
     host: string = '',
     version: string = '1',
-    compress: boolean = true,
+    compress: TCompressionType = 'auto',
   ) {
     super(apiKey, host || MFRAPI.defaultHost, version, compress);
   }
