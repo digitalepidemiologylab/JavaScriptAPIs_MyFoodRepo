@@ -162,6 +162,18 @@ type PostMedia = {
   file: string,
 };
 
+type Country = 'CH';
+
+type PostDishFoodFood = {
+  _type: 'barcode',
+  country: Country,
+  barcode: string,
+};
+
+type PostDishFood = {
+  food: PostDishFoodFood,
+};
+
 type PostDish = {
   id: number,
   submitting?: boolean,
@@ -170,6 +182,7 @@ type PostDish = {
   eaten_at: string,
   eaten_at_utc_offset: number,
   media: PostMedia[],
+  dish_foods?: PostDishFood[],
 };
 
 type Media = {
