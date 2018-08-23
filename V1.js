@@ -177,11 +177,11 @@ type PostDishFood = {
 type PostDish = {
   id: number,
   submitting?: boolean,
-  name: string,
-  note: string,
+  name?: string,
+  note?: string,
   eaten_at: string,
   eaten_at_utc_offset: number,
-  media: PostMedia[],
+  media?: PostMedia[],
   dish_foods?: PostDishFood[],
 };
 
