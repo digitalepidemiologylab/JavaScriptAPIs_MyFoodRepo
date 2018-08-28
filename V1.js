@@ -191,6 +191,12 @@ type Media = {
   variants: MediaVariant[],
 };
 
+type Language = 'fr' | 'de' | 'it' | 'en';
+
+type Translations = {
+  [key: Language]: string,
+};
+
 type Dish = {
   id: number,
   _destroyed?: boolean, // eslint-disable-line no-underscore-dangle
@@ -214,9 +220,9 @@ type Subject = {
   user_attached: boolean,
   user_key: string,
   expiration_at: ?string,
-  study_name_translations: { [key: string]: string },
+  study_name_translations: Translations,
   study_logo_uri: ?string,
-  cohort_name_translations: { [key: string]: string },
+  cohort_name_translations: Translations,
   cohort_logo_uri: ?string,
   created_at: string,
   updated_at: string,
