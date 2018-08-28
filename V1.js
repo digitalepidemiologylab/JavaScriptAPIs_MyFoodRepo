@@ -243,7 +243,7 @@ type Dish = {
   status: string,
   eaten_at: Date,
   eaten_at_utc_offset: number,
-  media: Media[],
+  media?: Media[],
   dish_foods?: DishFood[],
   comments: DishComment[],
   created_at: string,
