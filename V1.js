@@ -197,6 +197,43 @@ type Translations = {
   [key: Language]: string,
 };
 
+type FoodUnit = 'g' | 'ml';
+
+type FoodImageCategory =
+  | 'Nutrients table'
+  | 'Back'
+  | 'Ingredients list'
+  | 'Front';
+
+type URL = string;
+
+type FoodImage = {
+  categories: FoodImageCategory[],
+  thumb: URL,
+  medium: URL,
+  large: URL,
+  xlarge: URL,
+};
+
+type FoodNutrient = {};
+
+type Food = {
+  id: number,
+  type: 'FoodRepoFood',
+  country: Country,
+  barcode: string,
+  name_translations: Translations,
+  unit: FoodUnit,
+  images: FoodImage[],
+  food_nutrients: FoodNutrient[],
+  country: Country,
+};
+
+type DishFood = {
+  id: number,
+  food: Food,
+};
+
 type Dish = {
   id: number,
   _destroyed?: boolean, // eslint-disable-line no-underscore-dangle
@@ -207,6 +244,7 @@ type Dish = {
   eaten_at: Date,
   eaten_at_utc_offset: number,
   media: Media[],
+  dish_foods?: DishFood[],
   comments: DishComment[],
   created_at: string,
   updated_at: string,
