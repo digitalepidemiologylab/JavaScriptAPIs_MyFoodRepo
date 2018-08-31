@@ -419,7 +419,7 @@ export default class MFRAPI extends GenericAPI {
     if (typeof lastSync === 'string') {
       lastSyncFilter = `?last_sync_at=${lastSync}`;
     } else if (lastSync instanceof Date) {
-      lastSyncFilter = lastSync.toISOString();
+      lastSyncFilter = `?last_sync_at=${lastSync.toISOString()}`;
     } else {
       lastSyncFilter = '';
     }
