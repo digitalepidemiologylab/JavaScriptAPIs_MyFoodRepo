@@ -467,10 +467,10 @@ export default class MFRAPI extends GenericAPI {
     dish: PostDish,
     timeout: number = 0,
   ): Promise<APIResponseType<{ dish: Dish }>> {
-    // const user = userId || 'me';
+    const user = userId || 'me';
     return new Promise((resolve, reject) => {
       this.requestPostURL(
-        `dishes/${dish.id}/duplicate`,
+        `users/${user}/dishes/${dish.id}/duplicate`,
         { dish: { ...dish, id: undefined } },
         timeout,
       )
