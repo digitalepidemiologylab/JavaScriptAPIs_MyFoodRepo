@@ -146,7 +146,11 @@ type ErrorHandler = (error: HttpError) => void;
 
 type DishComment = {
   id: number,
-  user: { display_name: string, avatar_url: string },
+  user: {
+    id: number,
+    display_name: string,
+    avatar_url: string,
+  },
   message: string,
   created_at: Date,
   updated_at: Date,
