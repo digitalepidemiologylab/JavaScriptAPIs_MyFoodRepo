@@ -555,6 +555,7 @@ export type MFRUserInfo = UserInfo;
 export type MFRDish = Dish;
 export type MFRPostDish = PostDish;
 export type MFRDishes = Dishes;
+export type MFRDishComment = DishComment;
 export type MFRAuthenticatedLoginInfo = AuthenticatedLoginInfo;
 export type MFRAnonymousLoginInfo = AnonymousLoginInfo;
 export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
