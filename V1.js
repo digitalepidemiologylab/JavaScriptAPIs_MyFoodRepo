@@ -7,7 +7,7 @@ MyFoodRepo's API could be
 
 */
 
-import { HttpError } from 'salathegroup_apis_common/src/ajaxhelpers';
+import { HttpError } from 'salathegroup_apis_common/src/ajax-helpers';
 import GenericAPI, { type TCompressionType } from 'salathegroup_apis_common';
 
 import DeviceInfo from 'react-native-device-info';
