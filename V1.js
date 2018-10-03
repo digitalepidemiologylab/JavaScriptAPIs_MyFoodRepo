@@ -287,6 +287,7 @@ function simplifiedErrorReject(reject: (error: Object) => void): ErrorHandler {
 
 export default class MFRAPI extends GenericAPI {
   static defaultHost = 'https://www.myfoodrepo.org';
+
   static revision = 'ALPHA';
 
   static defaultRecognitionInputSize = {
@@ -295,6 +296,7 @@ export default class MFRAPI extends GenericAPI {
   };
 
   uuid: string;
+
   user: UserInfo;
 
   constructor(
