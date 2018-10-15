@@ -626,6 +626,18 @@ export default class MFRAPI extends GenericAPI {
       .catch(simplifiedErrorReject(reject));
     });
   }
+
+  nutrients(
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ }>> {
+    return new Promise((resolve, reject) => {
+      this.requestGetURL('get_nutrients', timeout)
+      .then((response: APIResponseType<{ }>) => {
+        resolve(response);
+      })
+      .catch(simplifiedErrorReject(reject));
+    });
+  }
 }
 
 export const MFRNutrientCategories = NutrientCategories;
