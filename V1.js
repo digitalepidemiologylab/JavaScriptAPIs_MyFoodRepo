@@ -463,9 +463,13 @@ export default class MFRAPI extends GenericAPI {
 
   logOut(timeout: number = 0): Promise<APIResponseType<LogoutResponse>> {
     return new Promise((resolve, reject) => {
+      if (this.sessionToken) {
       this.requestDeleteURL(`sessions/${this.sessionToken}`, {}, timeout)
       .then(resolve)
       .catch(simplifiedErrorReject(reject));
+      } else {
+        reject(new Error('No session token, logout impossible'));
+      }
     });
   }
 
