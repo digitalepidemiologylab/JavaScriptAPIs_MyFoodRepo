@@ -219,7 +219,75 @@ type FoodImage = {
   xlarge: URL,
 };
 
-type FoodNutrient = {};
+type Nutrient = {
+  id: number,
+  cname: string,
+  name_translations: Translations,
+  unit: string,
+}
+
+const CategoryNutrients = {
+  water: new Set(['water']),
+  alcohol: new Set(['alcohol']),
+  carbohydrate: new Set([
+    'carbohydrates',
+    'fiber',
+    'starch',
+    'sugar',
+  ]),
+  energy: new Set(['energy_kcal', 'energy_kj']),
+  fat: new Set([
+    'cholesterol',
+    'fat',
+    'fatty_acids_monounsaturated',
+    'fatty_acids_polyunsaturated',
+    'fatty_acids_saturated',
+  ]),
+  mineral: new Set([
+    'calcium',
+    'chloride',
+    'iodide',
+    'iron',
+    'magnesium',
+    'phosphorus',
+    'potassium',
+    'sodium',
+    'zinc',
+  ]),
+  protein: new Set(['protein']),
+  vitamin: new Set([
+    'all_trans_retinol_equivalents_activity',
+    'beta_carotene',
+    'beta_carotene_activity',
+    'folate',
+    'niacin',
+    'pantothenic_acid',
+    'vitamin_a_activity',
+    'vitamin_b1',
+    'vitamin_b12',
+    'vitamin_b2',
+    'vitamin_b6',
+    'vitamin_c',
+    'vitamin_d',
+    'vitamin_e_activity',
+  ]),
+};
+
+const NutrientCategories = {};
+Object.keys(CategoryNutrients).forEach((cn) => {
+  const nutrients = CategoryNutrients[cn].values();
+  let nutrient = nutrients.next();
+  while (!nutrient.done) {
+    NutrientCategories[nutrient.value] = cn;
+    nutrient = nutrients.next();
+  }
+});
+
+type FoodNutrient = {
+  id: number,
+  per_hundred: number,
+  nutrient: Nutrient;
+};
 
 type Food = {
   id: number,
@@ -551,6 +619,8 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 }
+
+export const MFRNutrientCategories = NutrientCategories;
 
 export type MFRInstallationInfo = InstallationInfo;
 export type MFRUserInfo = UserInfo;
