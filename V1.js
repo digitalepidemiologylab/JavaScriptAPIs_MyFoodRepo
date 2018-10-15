@@ -304,6 +304,10 @@ type Food = {
 type DishFood = {
   id: number,
   food: Food,
+  present_quantity: ?number,
+  present_unit: ?string,
+  eaten_quantity: ?number,
+  eaten_unit: ?string,
 };
 
 type Dish = {
