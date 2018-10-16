@@ -228,24 +228,23 @@ type Nutrient = {
   updated_at: string,
 }
 
-const CategoryNutrients = {
-  water: new Set(['water']),
-  alcohol: new Set(['alcohol']),
-  carbohydrate: new Set([
+const CategoryNutrients = new Map<string, Set<string>>([
+  ['energy', new Set(['energy_kcal', 'energy_kj'])],
+  ['carbohydrates', new Set([
     'carbohydrates',
     'fiber',
     'starch',
     'sugar',
-  ]),
-  energy: new Set(['energy_kcal', 'energy_kj']),
-  fat: new Set([
+  ])],
+  ['fat', new Set([
     'cholesterol',
     'fat',
     'fatty_acids_monounsaturated',
     'fatty_acids_polyunsaturated',
     'fatty_acids_saturated',
-  ]),
-  mineral: new Set([
+  ])],
+  ['protein', new Set(['protein'])],
+  ['minerals', new Set([
     'calcium',
     'chloride',
     'iodide',
@@ -255,9 +254,10 @@ const CategoryNutrients = {
     'potassium',
     'sodium',
     'zinc',
-  ]),
-  protein: new Set(['protein']),
-  vitamin: new Set([
+  ])],
+  ['water', new Set(['water'])],
+  ['alcohol', new Set(['alcohol'])],
+  ['vitamins', new Set([
     'all_trans_retinol_equivalents_activity',
     'beta_carotene',
     'beta_carotene_activity',
@@ -272,18 +272,20 @@ const CategoryNutrients = {
     'vitamin_c',
     'vitamin_d',
     'vitamin_e_activity',
-  ]),
-};
+  ])],
+]);
 
 const NutrientCategories = {};
-Object.keys(CategoryNutrients).forEach((cn) => {
-  const nutrients = CategoryNutrients[cn].values();
+// eslint-disable-next-line no-restricted-syntax
+for (const cn of CategoryNutrients) {
+  const [name, value] = cn;
+  const nutrients = value.values();
   let nutrient = nutrients.next();
   while (!nutrient.done) {
-    NutrientCategories[nutrient.value] = cn;
+    NutrientCategories[nutrient.value] = name;
     nutrient = nutrients.next();
   }
-});
+}
 
 type FoodNutrient = {
   id: number,
@@ -643,6 +645,7 @@ export default class MFRAPI extends GenericAPI {
 }
 
 export const MFRNutrientCategories = NutrientCategories;
+export const MFRCategoryNutrients = CategoryNutrients;
 
 export type MFRInstallationInfo = InstallationInfo;
 export type MFRUserInfo = UserInfo;
