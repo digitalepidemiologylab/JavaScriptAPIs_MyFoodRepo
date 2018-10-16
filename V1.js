@@ -633,10 +633,10 @@ export default class MFRAPI extends GenericAPI {
 
   nutrients(
     timeout: number = 0,
-  ): Promise<APIResponseType<{ }>> {
+  ): Promise<APIResponseType<{ nutrients: Nutrient[] }>> {
     return new Promise((resolve, reject) => {
-      this.requestGetURL('get_nutrients', timeout)
-      .then((response: APIResponseType<{ }>) => {
+      this.requestGetURL('nutrients', timeout)
+      .then((response: APIResponseType<{ nutrients: Nutrient[] }>) => {
         resolve(response);
       })
       .catch(simplifiedErrorReject(reject));
