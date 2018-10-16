@@ -224,6 +224,8 @@ type Nutrient = {
   cname: string,
   name_translations: Translations,
   unit: string,
+  created_at: string,
+  updated_at: string,
 }
 
 const CategoryNutrients = {
