@@ -5,10 +5,6 @@ import type { MFRDishFood } from './V1';
 type DishFoodCalculatedInfo = {
   normalized: boolean,
   normalizedQuantity: number,
-  eatenQuantity: number,
-  eatenUnit: string,
-  eatenQuantitySI: number,
-  eatenUnitSI: string,
 }
 
 const multipliers = {
@@ -75,7 +71,6 @@ export const calculateDishFoodInfo = (
   dishFood: MFRDishFood,
 ): DishFoodCalculatedInfo => {
   const {
-    food,
     eaten_quantity: eatenQuantity,
     eaten_unit: eatenUnit,
     present_quantity: presentQuantity,
