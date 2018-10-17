@@ -650,6 +650,7 @@ export const MFRCategoryNutrients = CategoryNutrients;
 export type MFRInstallationInfo = InstallationInfo;
 export type MFRUserInfo = UserInfo;
 export type MFRDish = Dish;
+export type MFRDishFood = DishFood;
 export type MFRPostDish = PostDish;
 export type MFRDishes = Dishes;
 export type MFRDishComment = DishComment;
