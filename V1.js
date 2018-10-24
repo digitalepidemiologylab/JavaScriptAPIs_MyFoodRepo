@@ -320,7 +320,9 @@ type Dish = {
   user_id: number,
   name: string,
   note: string,
-  status: string,
+  status: | 'pending_classification'
+    | 'pending_user_response'
+    | 'ok',
   eaten_at: Date,
   eaten_at_utc_offset: number,
   media?: Media[],
