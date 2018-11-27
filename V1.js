@@ -645,6 +645,24 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
+  userForgotPassword(
+    email: string,
+    timeout: number = 0,
+  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+    return new Promise((resolve, reject) => {
+      const info = {
+        user: {
+          email,
+        },
+      };
+      this.requestPostURL('user_forgot_password', info, timeout)
+      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+        resolve(response);
+      })
+      .catch(simplifiedErrorReject(reject));
+    });
+  }
+
   nutrients(
     timeout: number = 0,
   ): Promise<APIResponseType<{ nutrients: Nutrient[] }>> {
