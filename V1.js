@@ -237,53 +237,57 @@ type Nutrient = {
   unit: string,
   created_at: string,
   updated_at: string,
-}
+};
 
 const CategoryNutrients = new Map<string, Set<string>>([
   ['energy', new Set(['energy_kcal', 'energy_kj'])],
-  ['carbohydrates', new Set([
-    'carbohydrates',
-    'fiber',
-    'starch',
-    'sugar',
-  ])],
-  ['fat', new Set([
-    'cholesterol',
+  ['carbohydrates', new Set(['carbohydrates', 'fiber', 'starch', 'sugar'])],
+  [
     'fat',
-    'fatty_acids_monounsaturated',
-    'fatty_acids_polyunsaturated',
-    'fatty_acids_saturated',
-  ])],
+    new Set([
+      'cholesterol',
+      'fat',
+      'fatty_acids_monounsaturated',
+      'fatty_acids_polyunsaturated',
+      'fatty_acids_saturated',
+    ]),
+  ],
   ['protein', new Set(['protein'])],
-  ['minerals', new Set([
-    'calcium',
-    'chloride',
-    'iodide',
-    'iron',
-    'magnesium',
-    'phosphorus',
-    'potassium',
-    'sodium',
-    'zinc',
-  ])],
+  [
+    'minerals',
+    new Set([
+      'calcium',
+      'chloride',
+      'iodide',
+      'iron',
+      'magnesium',
+      'phosphorus',
+      'potassium',
+      'sodium',
+      'zinc',
+    ]),
+  ],
   ['water', new Set(['water'])],
   ['alcohol', new Set(['alcohol'])],
-  ['vitamins', new Set([
-    'all_trans_retinol_equivalents_activity',
-    'beta_carotene',
-    'beta_carotene_activity',
-    'folate',
-    'niacin',
-    'pantothenic_acid',
-    'vitamin_a_activity',
-    'vitamin_b1',
-    'vitamin_b2',
-    'vitamin_b6',
-    'vitamin_b12',
-    'vitamin_c',
-    'vitamin_d',
-    'vitamin_e_activity',
-  ])],
+  [
+    'vitamins',
+    new Set([
+      'all_trans_retinol_equivalents_activity',
+      'beta_carotene',
+      'beta_carotene_activity',
+      'folate',
+      'niacin',
+      'pantothenic_acid',
+      'vitamin_a_activity',
+      'vitamin_b1',
+      'vitamin_b2',
+      'vitamin_b6',
+      'vitamin_b12',
+      'vitamin_c',
+      'vitamin_d',
+      'vitamin_e_activity',
+    ]),
+  ],
 ]);
 
 const NutrientCategories = {};
@@ -331,9 +335,7 @@ type Dish = {
   user_id: number,
   name: string,
   note: string,
-  status: | 'pending_classification'
-    | 'pending_user_response'
-    | 'ok',
+  status: 'pending_classification' | 'pending_user_response' | 'ok',
   eaten_at: Date,
   eaten_at_utc_offset: number,
   media?: Media[],
@@ -490,11 +492,7 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  recognizeDishImage(
-    base64: string,
-    mimetype: ?string,
-    timeout: number = 0,
-  ): Promise<Object> {
+  recognizeDishImage(base64: string, mimetype: ?string, timeout: number = 0) {
     const uri = `data:${mimetype || 'image/png'};base64,${base64}`;
     return this.recognizeDishImageURI(uri, timeout);
   }
@@ -525,7 +523,7 @@ export default class MFRAPI extends GenericAPI {
       params.push(`last_sync_at=${lastSync.toISOString()}`);
     }
     if (sort) {
-      params.push(`${('q[sorts]')}=${sort.replace(' ', '+')}`);
+      params.push(`${'q[sorts]'}=${sort.replace(' ', '+')}`);
     }
     const paramsStr = params.length > 0 ? `?${params.join('&')}` : '';
     return new Promise((resolve, reject) => {
