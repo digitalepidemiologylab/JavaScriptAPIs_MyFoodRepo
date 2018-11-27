@@ -305,7 +305,7 @@ for (const cn of CategoryNutrients) {
 type FoodNutrient = {
   id: number,
   per_hundred: number,
-  nutrient: Nutrient;
+  nutrient: Nutrient,
 };
 
 type Food = {
