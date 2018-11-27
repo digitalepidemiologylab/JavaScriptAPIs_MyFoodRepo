@@ -91,10 +91,21 @@ type PartialUserInfo =
   | $Shape<AuthenticatedLoginInfo>
   | $Shape<CommonUserInfo>;
 
+type Message = {
+  type: string,
+  message: string,
+};
+
 type APIResponseType<T> = {
   data: T,
   meta: {
     api_version: string,
+    env: 'staging' | 'production',
+    server_time: string,
+    locale: string,
+  },
+  info?: {
+    messages?: Message[],
   },
   status: number,
 };
@@ -117,10 +128,10 @@ type DishRecognitionType = {
   image_recognition_id: string,
   image_url: string,
   predictions: Array<DishRecognitionPredictionType>,
-  status: string,
+  status: 'MYFOODREPO.IMAGE_PROCESSED' | string,
 };
 
-type DishRecognitionResponseType = {
+type DishRecognitionResponse = {
   recognition: DishRecognitionType,
 };
 
@@ -488,7 +499,10 @@ export default class MFRAPI extends GenericAPI {
     return this.recognizeDishImageURI(uri, timeout);
   }
 
-  recognizeDishImageURI(uri: string, timeout: number = 0): Promise<Object> {
+  recognizeDishImageURI(
+    uri: string,
+    timeout: number = 0,
+  ): Promise<APIResponseType<DishRecognitionResponse>> {
     const body = {
       image: {
         file: uri,
@@ -668,4 +682,3 @@ export type MFRAPIResponseType<T> = APIResponseType<T>;
 export type MFRAPIError = APIError;
 export type MFRDishRecognitionPredictionType = DishRecognitionPredictionType;
 export type MFRDishRecognitionType = DishRecognitionType;
-export type MFRDishRecognitionResponseType = DishRecognitionResponseType;
