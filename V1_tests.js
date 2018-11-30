@@ -231,17 +231,15 @@ async function testFunction(
 ) {
   const t = new Date();
   await f()
-  .then((response: Object) =>
-    testResults.push(
-      `${text}\n${expectedText(expectSuccess)} SUCCESS\nDone in ${new Date() -
-          t} ms\n${JSON.stringify(response)}`,
-    ))
-  .catch((error: Error) =>
-    testResults.push(
-      `${text}\n${expectedText(
-        !expectSuccess,
-      )} FAILURE\nDone in ${new Date() - t} ms\n${JSON.stringify(error)}`,
-    ));
+  .then((response: Object) => testResults.push(
+    `${text}\n${expectedText(expectSuccess)} SUCCESS\nDone in ${new Date()
+          - t} ms\n${JSON.stringify(response)}`,
+  ))
+  .catch((error: Error) => testResults.push(
+    `${text}\n${expectedText(
+      !expectSuccess,
+    )} FAILURE\nDone in ${new Date() - t} ms\n${JSON.stringify(error)}`,
+  ));
 }
 
 export default async function runTests(apiKey: string) {
