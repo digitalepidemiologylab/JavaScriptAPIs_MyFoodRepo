@@ -3,7 +3,7 @@
 /*
 
 This is just a draft of what a JavaScript consumption of
-MyFoodRepo's API could be
+My Food Repo's API could be
 
 */
 
@@ -12,361 +12,38 @@ import GenericAPI, { type TCompressionType } from 'salathegroup_apis_common';
 
 import DeviceInfo from 'react-native-device-info';
 
-type InstallationInfo = {
-  app_version: string,
-  device_vendor: string,
-  device_name: string,
-  os_name: string,
-  os_version: string,
-};
-
-type TAttribute = {|
-  id: number,
-|};
-
-/*
-type TAttributeDestroy = {|
-  ...TAttribute,
-  ...{| _destroy: boolean |},
-|};
-
-type TNewHistoricalData<T> = {|
-  ...{| date: Date |},
-  ...T,
-|};
-*/
-
-type TExistingHistoricalData<T> = {|
-  ...TAttribute,
-  ...{| date: Date |},
-  ...T,
-|};
-
-type THistoricalData<T> =
-  // | TNewHistoricalData<T>
-  TExistingHistoricalData<T>;
-// | TAttributeDestroy;
-
-type TGender = 'male' | 'female';
-
-type TWeightData = THistoricalData<{| weight: number |}>;
-
-type CommonUserInfo = {|
-  id?: number,
-  first_name?: string,
-  last_name?: string,
-  nickname?: string,
-  avatar_url?: string,
-  weights?: Array<TWeightData>,
-  height?: number,
-  sex?: TGender,
-  date_of_birth?: Date,
-|};
-
-type AuthenticatedLoginInfo = {|
-  auth_type: 'email_password',
-  email: string,
-  password: string,
-  new_password?: string,
-|};
-
-type AnonymousLoginInfo = {|
-  auth_type: 'anonymous',
-|};
-
-type AuthenticatedUserInfo = {|
-  ...AuthenticatedLoginInfo,
-  ...CommonUserInfo,
-|};
-
-type AnonymousUserInfo = {|
-  ...AnonymousLoginInfo,
-  ...CommonUserInfo,
-|};
-
-type UserInfo = AnonymousUserInfo | AuthenticatedUserInfo;
-
-type PartialUserInfo =
-  | $Shape<AnonymousLoginInfo>
-  | $Shape<AuthenticatedLoginInfo>
-  | $Shape<CommonUserInfo>;
-
-type Message = {
-  type: string,
-  message: string,
-};
-
-type APIResponseType<T> = {
-  data: T,
-  meta: {
-    api_version: string,
-    env: 'staging' | 'production',
-    server_time: string,
-    locale: string,
-  },
-  info?: {
-    messages?: Message[],
-  },
-  status: number,
-};
-
-type LoginResponse = {
-  session_token: string,
-};
-
-type LogoutResponse = {
-  session_token: string,
-};
-
-type DishRecognitionPredictionType = {
-  class: string,
-  confidence: number,
-};
-
-type DishRecognitionType = {
-  ml_api_version: string,
-  image_recognition_id: string,
-  image_url: string,
-  predictions: Array<DishRecognitionPredictionType>,
-  status: 'MYFOODREPO.IMAGE_PROCESSED' | string,
-};
-
-type DishRecognitionResponse = {
-  recognition: DishRecognitionType,
-};
-
-let installation: InstallationInfo;
-
-type APIError = {
-  type: string,
-  code: string,
-  message: string,
-  reason: string,
-  details?: {
-    [keys: string]: {
-      issues: Array<{
-        count?: number,
-        code: string,
-        message: string,
-      }>,
-    },
-  },
-};
+import * as CONST from './types/constants';
+import * as API from './types/api';
+import * as RESPONSE from './types/responses';
+import type { TSubject } from './types/Subject';
+import type {
+  TUser,
+  TPartialUser,
+  TAuthenticatedLogin,
+  TAnonymousLogin,
+  TAuthenticatedUser,
+  TAnonymousUser,
+} from './types/User';
+import type {
+  TDish,
+  TPostDish,
+  TPatchDish,
+  TDishFood,
+  TDishComment,
+} from './types/Dish';
+import type { TInstallationInfo } from './types/InstallationInfo';
+import type { THistoricalData } from './types/HistoricalData';
+import type {
+  TDishRecognition,
+  TDishRecognitionPrediction,
+} from './types/DishRecognition';
 
 type ErrorHandler = (error: HttpError) => void;
-
-type DishComment = {
-  id: number,
-  user: {
-    id: number,
-    display_name: string,
-    avatar_url: string,
-  },
-  message: string,
-  created_at: Date,
-  updated_at: Date,
-};
-
-type MediaVariant = {
-  name: 'original' | 'thumb',
-  url: string,
-};
-
-type PostMedia = {
-  type: 'ImageMedia',
-  file: string,
-};
-
-type Country = 'CH';
-
-type PostDishFoodFood = {
-  _type: 'barcode',
-  country: Country,
-  barcode: string,
-};
-
-type PostDishFood = {
-  food: PostDishFoodFood,
-};
-
-type PostDish = {
-  id: number,
-  submitting?: boolean,
-  name?: string,
-  note?: string,
-  eaten_at: string,
-  eaten_at_utc_offset: number,
-  media?: PostMedia[],
-  dish_foods?: PostDishFood[],
-};
-
-type Media = {
-  type: 'ImageMedia',
-  id: number,
-  variants: MediaVariant[],
-};
-
-type Language = 'fr' | 'de' | 'it' | 'en';
-
-type Translations = {
-  [key: Language]: string,
-};
-
-type FoodUnit = 'g' | 'ml';
-
-type FoodImageCategory =
-  | 'Nutrients table'
-  | 'Back'
-  | 'Ingredients list'
-  | 'Front';
-
-type URL = string;
-
-type FoodImage = {
-  categories: FoodImageCategory[],
-  thumb: URL,
-  medium: URL,
-  large: URL,
-  xlarge: URL,
-};
-
-type Nutrient = {
-  id: number,
-  cname: string,
-  name_translations: Translations,
-  unit: string,
-  created_at: string,
-  updated_at: string,
-};
-
-const CategoryNutrients = new Map<string, Set<string>>([
-  ['energy', new Set(['energy_kcal', 'energy_kj'])],
-  ['carbohydrates', new Set(['carbohydrates', 'fiber', 'starch', 'sugar'])],
-  [
-    'fat',
-    new Set([
-      'cholesterol',
-      'fat',
-      'fatty_acids_monounsaturated',
-      'fatty_acids_polyunsaturated',
-      'fatty_acids_saturated',
-    ]),
-  ],
-  ['protein', new Set(['protein'])],
-  [
-    'minerals',
-    new Set([
-      'calcium',
-      'chloride',
-      'iodide',
-      'iron',
-      'magnesium',
-      'phosphorus',
-      'potassium',
-      'sodium',
-      'zinc',
-    ]),
-  ],
-  ['water', new Set(['water'])],
-  ['alcohol', new Set(['alcohol'])],
-  [
-    'vitamins',
-    new Set([
-      'all_trans_retinol_equivalents_activity',
-      'beta_carotene',
-      'beta_carotene_activity',
-      'folate',
-      'niacin',
-      'pantothenic_acid',
-      'vitamin_a_activity',
-      'vitamin_b1',
-      'vitamin_b2',
-      'vitamin_b6',
-      'vitamin_b12',
-      'vitamin_c',
-      'vitamin_d',
-      'vitamin_e_activity',
-    ]),
-  ],
-]);
-
-const NutrientCategories = {};
-// eslint-disable-next-line no-restricted-syntax
-for (const cn of CategoryNutrients) {
-  const [name, value] = cn;
-  const nutrients = value.values();
-  let nutrient = nutrients.next();
-  while (!nutrient.done) {
-    NutrientCategories[nutrient.value] = name;
-    nutrient = nutrients.next();
-  }
-}
-
-type FoodNutrient = {
-  id: number,
-  per_hundred: number,
-  nutrient: Nutrient,
-};
-
-type Food = {
-  id: number,
-  type: 'FoodRepoFood',
-  country: Country,
-  barcode: string,
-  name_translations: Translations,
-  unit: FoodUnit,
-  images: FoodImage[],
-  food_nutrients: FoodNutrient[],
-  country: Country,
-};
-
-type DishFood = {
-  id: number,
-  food: Food,
-  present_quantity: ?number,
-  present_unit: ?string,
-  eaten_quantity: ?number,
-  eaten_unit: ?string,
-};
-
-type Dish = {
-  id: number,
-  _destroyed?: boolean, // eslint-disable-line no-underscore-dangle
-  user_id: number,
-  name: string,
-  note: string,
-  status: 'pending_classification' | 'pending_user_response' | 'ok',
-  eaten_at: Date,
-  eaten_at_utc_offset: number,
-  media?: Media[],
-  dish_foods?: DishFood[],
-  comments: DishComment[],
-  created_at: string,
-  updated_at: string,
-};
-
-type Dishes = Dish[];
-
-type Subject = {
-  id: number,
-  user_id: number,
-  user_attached: boolean,
-  user_key: string,
-  expiration_at: ?string,
-  study_name_translations: Translations,
-  study_logo_uri: ?string,
-  cohort_name_translations: Translations,
-  cohort_logo_uri: ?string,
-  created_at: string,
-  updated_at: string,
-};
-
-type Subjects = Subject[];
 
 function simplifiedErrorReject(reject: (error: Object) => void): ErrorHandler {
   return function errorHandler(error: HttpError) {
     try {
-      const response: { error: APIError } = JSON.parse(
+      const response: { error: API.TError } = JSON.parse(
         error.request.responseText,
       );
       reject(response.error);
@@ -386,9 +63,11 @@ export default class MFRAPI extends GenericAPI {
     height: 256,
   };
 
+  static installationInfo: TInstallationInfo;
+
   uuid: string;
 
-  user: UserInfo;
+  user: TUser;
 
   constructor(
     apiKey: string,
@@ -401,8 +80,8 @@ export default class MFRAPI extends GenericAPI {
 
   reportInstallation(uuid: string, timeout: number = 0): Promise<*> {
     this.uuid = uuid;
-    if (!installation) {
-      installation = {
+    if (!MFRAPI.installationInfo) {
+      MFRAPI.installationInfo = {
         app_version: DeviceInfo.getReadableVersion(),
         device_vendor: DeviceInfo.getManufacturer(),
         device_name: DeviceInfo.getModel(),
@@ -412,15 +91,15 @@ export default class MFRAPI extends GenericAPI {
     }
     return this.requestPatchURL(
       `installations/${uuid}`,
-      { installation },
+      { installation: MFRAPI.installationInfo },
       timeout,
     );
   }
 
-  createUser(user: UserInfo, timeout: number = 0): Promise<Object> {
+  createUser(user: TUser, timeout: number = 0): Promise<Object> {
     return new Promise((resolve, reject) => {
       this.requestPostURL('users', { user }, timeout)
-      .then((response: APIResponseType<LoginResponse>) => {
+      .then((response: RESPONSE.TLoginResponse) => {
         resolve(response);
       })
       .catch(simplifiedErrorReject(reject));
@@ -434,11 +113,11 @@ export default class MFRAPI extends GenericAPI {
   getUser(
     id?: number,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ user: UserInfo }>> {
+  ): Promise<RESPONSE.TGetUserResponse> {
     const user = id || 'me';
     return new Promise((resolve, reject) => {
       this.requestGetURL(`users/${user}`, timeout)
-      .then((response: APIResponseType<{ user: UserInfo }>) => {
+      .then((response: RESPONSE.TGetUserResponse) => {
         // this.user = response.data.user;
         resolve(response);
       })
@@ -446,12 +125,12 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  updateUser(user: PartialUserInfo, timeout: number = 0): Promise<Object> {
+  updateUser(user: TPartialUser, timeout: number = 0): Promise<Object> {
     const id: string = typeof user.id === 'number' ? `${user.id}` : 'me';
     return this.requestPatchURL(`users/${id}`, { user }, timeout);
   }
 
-  updateUserLogin(user: PartialUserInfo, timeout: number = 0): Promise<Object> {
+  updateUserLogin(user: TPartialUser, timeout: number = 0): Promise<Object> {
     const id = typeof user.id === 'number' ? user.id : 'me';
     return this.requestPatchURL(
       `users/${id}/update_email_password`,
@@ -460,10 +139,7 @@ export default class MFRAPI extends GenericAPI {
     );
   }
 
-  logIn(
-    user: UserInfo,
-    timeout: number = 0,
-  ): Promise<APIResponseType<LoginResponse>> {
+  logIn(user: TUser, timeout: number = 0): Promise<RESPONSE.TLoginResponse> {
     return new Promise((resolve, reject) => {
       const sessionInfo = {
         user,
@@ -472,7 +148,7 @@ export default class MFRAPI extends GenericAPI {
         },
       };
       this.requestPostURL('sessions', sessionInfo, timeout)
-      .then((response: APIResponseType<LoginResponse>) => {
+      .then((response: RESPONSE.TLoginResponse) => {
         this.sessionToken = response.data.session_token;
         resolve(response);
       })
@@ -480,7 +156,7 @@ export default class MFRAPI extends GenericAPI {
     });
   }
 
-  logOut(timeout: number = 0): Promise<APIResponseType<LogoutResponse>> {
+  logOut(timeout: number = 0): Promise<RESPONSE.TLogoutResponse> {
     return new Promise((resolve, reject) => {
       if (this.sessionToken) {
         this.requestDeleteURL(`sessions/${this.sessionToken}`, {}, timeout)
@@ -500,7 +176,7 @@ export default class MFRAPI extends GenericAPI {
   recognizeDishImageURI(
     uri: string,
     timeout: number = 0,
-  ): Promise<APIResponseType<DishRecognitionResponse>> {
+  ): Promise<RESPONSE.TDishRecognitionResponse> {
     const body = {
       image: {
         file: uri,
@@ -514,7 +190,7 @@ export default class MFRAPI extends GenericAPI {
     lastSync: ?(Date | string),
     timeout: number = 0,
     sort: string = 'eaten_at desc',
-  ): Promise<APIResponseType<{ dishes: Dishes }>> {
+  ): Promise<RESPONSE.TDishesResponse> {
     const user = userId || 'me';
     const params = [];
     if (typeof lastSync === 'string') {
@@ -528,8 +204,15 @@ export default class MFRAPI extends GenericAPI {
     const paramsStr = params.length > 0 ? `?${params.join('&')}` : '';
     return new Promise((resolve, reject) => {
       this.requestGetURL(`users/${user}/dishes${paramsStr}`, timeout)
-      .then((response: APIResponseType<{ dishes: Dishes }>) => {
-        resolve(response);
+      .then((response: RESPONSE.TPreDishesResponse) => {
+        const { data, ...rest } = response;
+        const { dishes: adishes } = data;
+        resolve({
+          data: {
+            dishes: adishes.map(d => ({ _record: 'get', ...d })),
+          },
+          ...rest,
+        });
       })
       .catch((error: Error) => reject(error));
     });
@@ -537,14 +220,22 @@ export default class MFRAPI extends GenericAPI {
 
   addDish(
     userId: ?number,
-    dish: PostDish,
+    dish: TPostDish,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ dish: Dish }>> {
+  ): Promise<RESPONSE.TDishResponse> {
     const user = userId || 'me';
+    const { _record, ...sanitized } = dish;
     return new Promise((resolve, reject) => {
-      this.requestPostURL(`users/${user}/dishes`, { dish }, timeout)
-      .then((response: APIResponseType<{ dish: Dish }>) => {
-        resolve(response);
+      this.requestPostURL(`users/${user}/dishes`, { dish: sanitized }, timeout)
+      .then((response: RESPONSE.TPreDishResponse) => {
+        const { data, ...rest } = response;
+        const { dish: adish } = data;
+        resolve({
+          data: {
+            dish: { _record: 'get', ...adish },
+          },
+          ...rest,
+        });
       })
       .catch((error: Error) => reject(error));
     });
@@ -554,52 +245,85 @@ export default class MFRAPI extends GenericAPI {
     userId: ?number,
     dishId: number,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ dish: Dish }>> {
+  ): Promise<RESPONSE.TDishResponse> {
     const user = userId || 'me';
     return new Promise((resolve, reject) => {
       this.requestDeleteURL(`users/${user}/dishes/${dishId}`, null, timeout)
-      .then((response: APIResponseType<{ dish: Dish }>) => {
-        resolve(response);
+      .then((response: RESPONSE.TPreDishResponse) => {
+        const { data, ...rest } = response;
+        const { dish: adish } = data;
+        resolve({
+          data: {
+            dish: { _record: 'get', ...adish },
+          },
+          ...rest,
+        });
       })
       .catch((error: Error) => reject(error));
     });
   }
 
+  // TODO: See why we pass the whole dish here...
   duplicateDish(
     userId: ?number,
-    dish: PostDish,
+    dish: TPostDish,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ dish: Dish }>> {
+  ): Promise<RESPONSE.TDishResponse> {
     const user = userId || 'me';
     return new Promise((resolve, reject) => {
+      const { _record, id, ...sanitized } = dish;
       this.requestPostURL(
         `users/${user}/dishes/${dish.id}/duplicate`,
-        { dish: { ...dish, id: undefined } },
+        { dish: sanitized },
         timeout,
       )
-      .then((response: APIResponseType<{ dish: Dish }>) => {
-        resolve(response);
+      .then((response: RESPONSE.TPreDishResponse) => {
+        const { data, ...rest } = response;
+        const { dish: adish } = data;
+        resolve({
+          data: {
+            dish: { _record: 'get', ...adish },
+          },
+          ...rest,
+        });
       })
       .catch((error: Error) => reject(error));
     });
   }
 
-  updateDish(dish: $Shape<Dish>, timeout: number = 0): Promise<Object> {
-    return this.requestPatchURL(
-      `dishes/${dish.id}`,
-      { dish: { ...dish, id: undefined } },
-      timeout,
-    );
+  updateDish(
+    dish: TPatchDish,
+    timeout: number = 0,
+  ): Promise<RESPONSE.TDishResponse> {
+    return new Promise((resolve, reject) => {
+      const { _record, id, ...sanitized } = dish;
+      this.requestPatchURL(
+        `dishes/${dish.id}`,
+        { dish: sanitized },
+        timeout,
+      )
+      .then((response: RESPONSE.TPreDishResponse) => {
+        const { data, ...rest } = response;
+        const { dish: adish } = data;
+        resolve({
+          data: {
+            dish: { _record: 'get', ...adish },
+          },
+          ...rest,
+        });
+      })
+      .catch((error: Error) => reject(error));
+    });
   }
 
   getSubjects(
     userId?: ?number,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+  ): Promise<RESPONSE.TSubjectsResponse> {
     const user = userId || 'me';
     return new Promise((resolve, reject) => {
       this.requestGetURL(`users/${user}/subjects`, timeout)
-      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+      .then((response: RESPONSE.TSubjectsResponse) => {
         resolve(response);
       })
       .catch((error: Error) => reject(error));
@@ -610,7 +334,7 @@ export default class MFRAPI extends GenericAPI {
     subjectKey: string,
     userId?: ?number,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+  ): Promise<RESPONSE.TSubjectsResponse> {
     const user = userId || 'me';
     return new Promise((resolve, reject) => {
       const info = {
@@ -619,7 +343,7 @@ export default class MFRAPI extends GenericAPI {
         },
       };
       this.requestPostURL(`users/${user}/subjects`, info, timeout)
-      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+      .then((response: RESPONSE.TSubjectsResponse) => {
         resolve(response);
       })
       .catch(simplifiedErrorReject(reject));
@@ -630,7 +354,7 @@ export default class MFRAPI extends GenericAPI {
     subjectId: number,
     userId?: ?number,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+  ): Promise<RESPONSE.TSubjectsResponse> {
     const user = userId || 'me';
     return new Promise((resolve, reject) => {
       this.requestDeleteURL(
@@ -638,7 +362,7 @@ export default class MFRAPI extends GenericAPI {
         null,
         timeout,
       )
-      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+      .then((response: RESPONSE.TSubjectsResponse) => {
         resolve(response);
       })
       .catch(simplifiedErrorReject(reject));
@@ -648,7 +372,7 @@ export default class MFRAPI extends GenericAPI {
   userForgotPassword(
     email: string,
     timeout: number = 0,
-  ): Promise<APIResponseType<{ subjects: Subjects }>> {
+  ): Promise<RESPONSE.TSubjectsResponse> {
     return new Promise((resolve, reject) => {
       const info = {
         user: {
@@ -656,19 +380,17 @@ export default class MFRAPI extends GenericAPI {
         },
       };
       this.requestPostURL('user_forgot_password', info, timeout)
-      .then((response: APIResponseType<{ subjects: Subjects }>) => {
+      .then((response: RESPONSE.TSubjectsResponse) => {
         resolve(response);
       })
       .catch(simplifiedErrorReject(reject));
     });
   }
 
-  nutrients(
-    timeout: number = 0,
-  ): Promise<APIResponseType<{ nutrients: Nutrient[] }>> {
+  nutrients(timeout: number = 0): Promise<RESPONSE.TNutrientsResponse> {
     return new Promise((resolve, reject) => {
       this.requestGetURL('nutrients', timeout)
-      .then((response: APIResponseType<{ nutrients: Nutrient[] }>) => {
+      .then((response: RESPONSE.TNutrientsResponse) => {
         resolve(response);
       })
       .catch(simplifiedErrorReject(reject));
@@ -676,25 +398,26 @@ export default class MFRAPI extends GenericAPI {
   }
 }
 
-export const MFRNutrientCategories = NutrientCategories;
-export const MFRCategoryNutrients = CategoryNutrients;
+export const MFRNutrientCategories = CONST.NutrientCategories;
+export const MFRCategoryNutrients = CONST.CategoryNutrients;
 
-export type MFRInstallationInfo = InstallationInfo;
-export type MFRUserInfo = UserInfo;
-export type MFRDish = Dish;
-export type MFRDishFood = DishFood;
-export type MFRPostDish = PostDish;
-export type MFRDishes = Dishes;
-export type MFRDishComment = DishComment;
-export type MFRAuthenticatedLoginInfo = AuthenticatedLoginInfo;
-export type MFRAnonymousLoginInfo = AnonymousLoginInfo;
-export type MFRAuthenticatedUserInfo = AuthenticatedUserInfo;
-export type MFRAnonymousUserInfo = AnonymousUserInfo;
-export type MFRPartialUserInfo = PartialUserInfo;
-export type MFRGender = TGender;
-export type MFRSubject = Subject;
+export type MFRInstallationInfo = TInstallationInfo;
+export type MFRUserInfo = TUser;
+export type MFRDish = TDish;
+export type MFRDishFood = TDishFood;
+export type MFRPostDish = TPostDish;
+export type MFRPatchDish = TPatchDish;
+export type MFRDishes = TDish[];
+export type MFRDishComment = TDishComment;
+export type MFRAuthenticatedLoginInfo = TAuthenticatedLogin;
+export type MFRAnonymousLoginInfo = TAnonymousLogin;
+export type MFRAuthenticatedUserInfo = TAuthenticatedUser;
+export type MFRAnonymousUserInfo = TAnonymousUser;
+export type MFRPartialUserInfo = TPartialUser;
+export type MFRGender = CONST.TGender;
+export type MFRSubject = TSubject;
 export type MFRHistoricalData = THistoricalData<*>;
-export type MFRAPIResponseType<T> = APIResponseType<T>;
-export type MFRAPIError = APIError;
-export type MFRDishRecognitionPredictionType = DishRecognitionPredictionType;
-export type MFRDishRecognitionType = DishRecognitionType;
+export type MFRAPIResponseType<T> = API.TResponseType<T>;
+export type MFRAPIError = API.TError;
+export type MFRDishRecognitionPredictionType = TDishRecognitionPrediction;
+export type MFRDishRecognitionType = TDishRecognition;
