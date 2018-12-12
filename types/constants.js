@@ -33,7 +33,8 @@ export type TFoodImageCategory =
   | 'Ingredients list'
   | 'Front';
 
-export type TFoodTypeFoodRepo = 'FoodRepoFood';
+export const FoodTypeFoodRepo: 'FoodRepoFood' = 'FoodRepoFood';
+export type TFoodTypeFoodRepo = typeof FoodTypeFoodRepo;
 export type TFoodType = TFoodTypeFoodRepo;
 
 export type TDishStatusPendingClassification = 'pending_classification';
