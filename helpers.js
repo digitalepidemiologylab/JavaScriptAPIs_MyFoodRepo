@@ -93,7 +93,7 @@ export const calculateDishFoodInfo = (
       normalized = true;
     }
   } else if (typeof eatenQuantity === 'number'
-      && typeof eatenUnit === 'string') {
+    && typeof eatenUnit === 'string') {
     normalizedQuantity = normalizeQuantity(eatenQuantity, eatenUnit).quantity;
     normalized = true;
   }
