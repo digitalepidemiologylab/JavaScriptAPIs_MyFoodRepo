@@ -98,7 +98,7 @@ export const displayQuantity = (
   let mini = null;
   for (let i = 0, n = mults.length; i < n; i++) {
     const mult = multipliers[mults[i]];
-    const expMult = Math.log10(mult * 10);
+    const expMult = Math.log10(mult * 2);
     const diff = Math.abs(expMult - exp);
     if (diff < min) {
       min = diff;
