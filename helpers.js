@@ -92,7 +92,7 @@ export const displayQuantity = (
   }
   const exp = Math.log10(norm.quantity);
   const mults = Object.keys(multipliers).filter(
-    m => m === '___' || allowed.includes(m),
+    m => m === '___' || (allowed || []).includes(m),
   );
   let min = 999999;
   let mini = null;
