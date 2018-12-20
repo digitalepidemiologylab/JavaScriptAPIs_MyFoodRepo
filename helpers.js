@@ -8,20 +8,20 @@ type DishFoodCalculatedInfo = {
 }
 
 const multipliers = {
-  f: 10E-15,
-  p: 10E-12,
-  n: 10E-9,
-  µ: 10E-6,
-  u: 10E-6,
-  m: 10E-3,
-  c: 10E-2,
-  d: 10E-1,
-  da: 10E1,
-  h: 10E2,
-  k: 10E3,
-  M: 10E6,
-  G: 10E9,
-  T: 10E12,
+  f: 1E-15,
+  p: 1E-12,
+  n: 1E-9,
+  µ: 1E-6,
+  u: 1E-6,
+  m: 1E-3,
+  c: 1E-2,
+  d: 1E-1,
+  da: 1E1,
+  h: 1E2,
+  k: 1E3,
+  M: 1E6,
+  G: 1E9,
+  T: 1E12,
 };
 
 const units = [
