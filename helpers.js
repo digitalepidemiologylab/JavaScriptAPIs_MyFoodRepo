@@ -16,6 +16,7 @@ const multipliers = {
   m: 1E-3,
   c: 1E-2,
   d: 1E-1,
+  ___: 1,
   da: 1E1,
   h: 1E2,
   k: 1E3,
