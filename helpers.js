@@ -68,6 +68,51 @@ export const normalizeQuantity = (quantity: number, unit: string) => {
   throw new Error('Could not normalize quantity');
 };
 
+export const displayQuantity = (
+  quantity: number,
+  unit: string,
+  allowedMultipliers?: string[],
+) => {
+  const norm = normalizeQuantity(quantity, unit);
+  if (!norm.quantity) return `${quantity} ${unit}`;
+
+  let allowed = allowedMultipliers;
+  if (!allowed) {
+    switch (norm.unit) {
+      case 'g':
+        allowed = ['n', 'µ', 'm', 'k'];
+        break;
+      case 'L':
+      case 'l':
+        allowed = ['n', 'µ', 'm', 'd', 'k'];
+        break;
+      default:
+        allowed = Object.keys(multipliers);
+    }
+  }
+  const exp = Math.log10(norm.quantity);
+  const mults = Object.keys(multipliers).filter(
+    m => m === '___' || allowed.includes(m),
+  );
+  let min = 999999;
+  let mini = null;
+  for (let i = 0, n = mults.length; i < n; i++) {
+    const mult = multipliers[mults[i]];
+    const expMult = Math.log10(mult * 10);
+    const diff = Math.abs(expMult - exp);
+    if (diff < min) {
+      min = diff;
+      mini = i;
+    }
+  }
+  if (mini !== null) {
+    const mult = mults[mini];
+    const value = Math.round(norm.quantity / multipliers[mult] * 100) / 100;
+    return `${value} ${mult === '___' ? '' : mult}${norm.unit}`;
+  }
+  return `${quantity} ${unit}`;
+};
+
 export const calculateDishFoodInfo = (
   dishFood: MFRDishFood,
 ): DishFoodCalculatedInfo => {
