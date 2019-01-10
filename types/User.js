@@ -5,9 +5,9 @@ import type { THistoricalData } from './HistoricalData';
 
 export type TAuthenticatedLogin = {|
   auth_type: CONST.TAuthTypeEmailPassword,
-  email: string,
-  password: string,
-  new_password?: string,
+    email: string,
+      password: string,
+        new_password ?: string,
 |};
 
 export type TAnonymousLogin = {|
@@ -16,14 +16,15 @@ export type TAnonymousLogin = {|
 
 type TUserCommon = {|
   id?: number,
-  first_name?: string,
-  last_name?: string,
-  nickname?: string,
-  avatar_url?: string,
-  weights?: Array<THistoricalData<{| weight: number |}>>,
-  height?: number,
-  sex?: CONST.TGender,
-  date_of_birth?: Date,
+  private_dish_media ?: boolean,
+  first_name ?: string,
+  last_name ?: string,
+  nickname ?: string,
+  avatar_url ?: string,
+  weights ?: Array<THistoricalData<{| weight: number |}>>,
+  height ?: number,
+  sex ?: CONST.TGender,
+  date_of_birth ?: Date,
 |};
 
 export type TAuthenticatedUser = {|
