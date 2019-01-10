@@ -21,6 +21,10 @@ type TPostDishFoodFood = {|
 
 type TPostDishFood = {|
   food: TPostDishFoodFood,
+  present_quantity?: number,
+  present_unit?: string,
+  eaten_quantity?: number,
+  eaten_unit?: string,
 |};
 
 type TPatchDishFood = {|
@@ -55,7 +59,7 @@ export type TResponseDish = {|
   name: string,
   note: string,
   status: CONST.TDishStatus,
-  media?: TMedia[],
+  media?: $ReadOnlyArray<TMedia>,
   dish_foods?: $ReadOnlyArray<TDishFood>,
   comments: $ReadOnlyArray<TDishComment>,
   created_at: string,
@@ -78,7 +82,7 @@ export type TPostDish = {|
   submitting?: boolean,
   name?: string,
   note?: string,
-  media?: TPostMedia[],
+  media?: $ReadOnlyArray<TPostMedia>,
   dish_foods?: $ReadOnlyArray<TPostDishFood>,
   comments?: $ReadOnlyArray<TPostDishComment>,
   pictureUri?: string,
