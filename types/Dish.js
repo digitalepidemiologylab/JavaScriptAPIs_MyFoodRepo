@@ -53,6 +53,7 @@ export type TPostDishComment = {|
 
 export type TResponseDish = {|
   id: number,
+  uuid?: ?string,
   eaten_at: string,
   eaten_at_utc_offset: number,
   user_id: number,
@@ -77,6 +78,7 @@ export type TPostDish = {|
   _record: 'post',
 
   id: number,
+  uuid?: ?string,
   eaten_at: string,
   eaten_at_utc_offset: number,
   submitting?: boolean,
