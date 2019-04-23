@@ -14,4 +14,5 @@ export type TSubject = {|
   cohort_logo_uri: ?string,
   created_at: string,
   updated_at: string,
+  expired_at: ?string,
 |};
