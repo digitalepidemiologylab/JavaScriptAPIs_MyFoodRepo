@@ -28,6 +28,7 @@ import type {
   TDish,
   TPostDish,
   TPatchDish,
+  TPatchDishFood,
   TDishFood,
   TDishComment,
 } from './types/Dish';
@@ -407,6 +408,7 @@ export type MFRDish = TDish;
 export type MFRDishFood = TDishFood;
 export type MFRPostDish = TPostDish;
 export type MFRPatchDish = TPatchDish;
+export type MFRPatchDishFood = TPatchDishFood;
 export type MFRDishes = TDish[];
 export type MFRDishComment = TDishComment;
 export type MFRAuthenticatedLoginInfo = TAuthenticatedLogin;

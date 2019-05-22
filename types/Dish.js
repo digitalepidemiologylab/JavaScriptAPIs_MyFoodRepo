@@ -13,13 +13,13 @@ export type TDishFood = {|
   eaten_unit: ?string,
 |};
 
-type TPostDishFoodFood = {|
+export type TPostDishFoodFood = {|
   _type: 'barcode',
   country: CONST.TCountry,
   barcode: string,
 |};
 
-type TPostDishFood = {|
+export type TPostDishFood = {|
   food: TPostDishFoodFood,
   present_quantity?: number,
   present_unit?: string,
@@ -27,7 +27,7 @@ type TPostDishFood = {|
   eaten_unit?: string,
 |};
 
-type TPatchDishFood = {|
+export type TPatchDishFood = {|
   id: number,
   present_quantity?: number,
   present_unit?: string,
