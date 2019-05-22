@@ -31,8 +31,8 @@ export type TPatchDishFood = {|
   id: number,
   present_quantity?: number,
   present_unit?: string,
-  eaten_quantity?: number,
-  eaten_unit?: string,
+  eaten_quantity?: number | '__DESTROY',
+  eaten_unit?: string | '__DESTROY',
 |};
 
 export type TDishComment = {|
