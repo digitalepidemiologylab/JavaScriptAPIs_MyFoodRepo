@@ -61,6 +61,7 @@ export type TResponseDish = {|
   note: string,
   status: CONST.TDishStatus,
   media?: $ReadOnlyArray<TMedia>,
+  // $FlowFixMe
   dish_foods?: $ReadOnlyArray<TDishFood>,
   comments: $ReadOnlyArray<TDishComment>,
   created_at: string,
@@ -85,7 +86,9 @@ export type TPostDish = {|
   name?: string,
   note?: string,
   media?: $ReadOnlyArray<TPostMedia>,
+  // $FlowFixMe
   dish_foods?: $ReadOnlyArray<TPostDishFood>,
+  // $FlowFixMe
   comments?: $ReadOnlyArray<TPostDishComment>,
   pictureUri?: string,
 |};
