@@ -27,6 +27,7 @@ export type TFood = {|
   country: CONST.TCountry,
   barcode: string,
   name_translations: TTranslations,
+  display_name_translations: TTranslations,
   unit: CONST.TFoodUnit,
   images: TFoodImage[],
   food_nutrients: TFoodNutrient[],
