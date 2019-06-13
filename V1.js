@@ -15,7 +15,9 @@ import DeviceInfo from 'react-native-device-info';
 import * as CONST from './types/constants';
 import * as API from './types/api';
 import * as RESPONSE from './types/responses';
+
 import type { TSubject } from './types/Subject';
+
 import type {
   TUser,
   TPartialUser,
@@ -24,6 +26,7 @@ import type {
   TAuthenticatedUser,
   TAnonymousUser,
 } from './types/User';
+
 import type {
   TDish,
   TPostDish,
@@ -32,8 +35,14 @@ import type {
   TDishFood,
   TDishComment,
 } from './types/Dish';
-import type { TInstallationInfo } from './types/InstallationInfo';
+
+import type {
+  TInstallationInfo,
+  TInstallationExtraInfo,
+} from './types/InstallationInfo';
+
 import type { THistoricalData } from './types/HistoricalData';
+
 import type {
   TDishRecognition,
   TDishRecognitionPrediction,
@@ -54,7 +63,7 @@ function simplifiedErrorReject(reject: (error: Object) => void): ErrorHandler {
   };
 }
 
-export default class MFRAPI extends GenericAPI {
+export default class MFRAPI<T: TInstallationExtraInfo> extends GenericAPI {
   static defaultHost = 'https://www.myfoodrepo.org';
 
   static revision = 'ALPHA';
@@ -64,7 +73,7 @@ export default class MFRAPI extends GenericAPI {
     height: 256,
   };
 
-  static installationInfo: TInstallationInfo;
+  static installationInfo: TInstallationInfo<T>;
 
   uuid: string;
 
@@ -79,10 +88,15 @@ export default class MFRAPI extends GenericAPI {
     super(apiKey, host || MFRAPI.defaultHost, version, compress);
   }
 
-  reportInstallation(uuid: string, timeout: number = 0): Promise<*> {
+  reportInstallation(
+    uuid: string,
+    extraInfo: T,
+    timeout: number = 0,
+  ): Promise<*> {
     this.uuid = uuid;
     if (!MFRAPI.installationInfo) {
       MFRAPI.installationInfo = {
+        ...extraInfo,
         app_version: DeviceInfo.getReadableVersion(),
         device_vendor: DeviceInfo.getManufacturer(),
         device_name: DeviceInfo.getModel(),
@@ -402,7 +416,7 @@ export default class MFRAPI extends GenericAPI {
 export const MFRNutrientCategories = CONST.NutrientCategories;
 export const MFRCategoryNutrients = CONST.CategoryNutrients;
 
-export type MFRInstallationInfo = TInstallationInfo;
+export type MFRInstallationInfo<T> = TInstallationInfo<T>;
 export type MFRUserInfo = TUser;
 export type MFRDish = TDish;
 export type MFRDishFood = TDishFood;

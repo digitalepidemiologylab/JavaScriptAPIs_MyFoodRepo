@@ -1,6 +1,9 @@
 // @flow
 
-export type TInstallationInfo = {|
+export type TInstallationExtraInfo = { [string]: string };
+
+export type TInstallationInfo<T: TInstallationExtraInfo> = {|
+  ...T,
   app_version: string,
   device_vendor: string,
   device_name: string,

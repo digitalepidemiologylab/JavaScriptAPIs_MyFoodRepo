@@ -28,7 +28,7 @@ import type {
   MFRPartialUserInfo,
 } from './V1';
 
-let myFoodRepoEndpoint: MFRAPI;
+let myFoodRepoEndpoint: MFRAPI<{||}>;
 
 // In real life, we should get our uuid from persistence
 const storedUuid = '2e58dcd7-0628-47f3-9007-8e09415f70d1';
@@ -145,7 +145,7 @@ function expectedText(expected) {
 
 // Test functions
 async function reportInstallation() {
-  return myFoodRepoEndpoint.reportInstallation(uuid);
+  return myFoodRepoEndpoint.reportInstallation(uuid, {});
 }
 async function reportInstallationWrongUuid() {
   return myFoodRepoEndpoint.reportInstallation('asdf');
