@@ -11,6 +11,7 @@ export type TResponseType<T> = {
   data: T,
   meta: {
     api_version: string,
+    db_version: string,
     env: CONST.TEnvironment,
     server_time: string,
     locale: string,
