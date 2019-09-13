@@ -88,7 +88,7 @@ export default class MFRAPI<T: TInstallationExtraInfo> extends GenericAPI {
     super(apiKey, host || MFRAPI.defaultHost, version, compress);
   }
 
-  reportInstallation(
+  async reportInstallation(
     uuid: string,
     extraInfo: T,
     timeout: number = 0,
@@ -97,11 +97,11 @@ export default class MFRAPI<T: TInstallationExtraInfo> extends GenericAPI {
     if (!MFRAPI.installationInfo) {
       MFRAPI.installationInfo = {
         ...extraInfo,
-        app_version: `${DeviceInfo.getReadableVersion()}`,
-        device_vendor: `${DeviceInfo.getManufacturer()}`,
-        device_name: `${DeviceInfo.getModel()}`,
-        os_name: `${DeviceInfo.getSystemName()}`,
-        os_version: `${DeviceInfo.getSystemVersion()}`,
+        app_version: await DeviceInfo.getReadableVersion(),
+        device_vendor: await DeviceInfo.getManufacturer(),
+        device_name: await DeviceInfo.getModel(),
+        os_name: await DeviceInfo.getSystemName(),
+        os_version: await DeviceInfo.getSystemVersion(),
       };
     }
     return this.requestPatchURL(
