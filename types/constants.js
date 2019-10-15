@@ -110,3 +110,10 @@ for (const cn of CategoryNutrients) {
 }
 
 export const NutrientCategories = nc;
+
+export const PushMessageKeys = {
+  DishStatusChangedToPendingUserResponse: 'dish_status_changed_to_pending_user_response',
+  MorningReminder: 'morning_reminder',
+  LunchReminder: 'lunch_reminder',
+  EveningReminder: 'evening_reminder',
+}
