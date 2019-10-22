@@ -29,7 +29,7 @@
   "dependencies": {
     "salathegroup_apis_common":
       "git+https://github.com/salathegroup/JavaScriptAPIs_common.git",
-    "react-native-device-info": "4.0.1-beta.4",
+    "react-native-device-info": "4.0.1",
     "uuid": "^3.3.3"
   }
 }
