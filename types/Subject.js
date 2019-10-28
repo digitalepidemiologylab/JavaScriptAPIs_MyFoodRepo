@@ -15,4 +15,5 @@ export type TSubject = {|
   created_at: string,
   updated_at: string,
   expired_at: ?string,
+  first_attached_at: ?string,
 |};
