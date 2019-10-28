@@ -353,11 +353,11 @@ export default class MFRAPI<T: TInstallationExtraInfo> extends GenericAPI {
     const user = userId || 'me';
     return new Promise((resolve, reject) => {
       const info = {
-        subject: {
+        subject_attachment: {
           key: subjectKey,
         },
       };
-      this.requestPostURL(`users/${user}/subjects`, info, timeout)
+      this.requestPostURL(`users/${user}/subject_attachments`, info, timeout)
       .then((response: RESPONSE.TSubjectsResponse) => {
         resolve(response);
       })
@@ -366,14 +366,14 @@ export default class MFRAPI<T: TInstallationExtraInfo> extends GenericAPI {
   }
 
   removeSubject(
-    subjectId: number,
+    subjectKey: string,
     userId?: ?number,
     timeout: number = 0,
   ): Promise<RESPONSE.TSubjectsResponse> {
     const user = userId || 'me';
     return new Promise((resolve, reject) => {
       this.requestDeleteURL(
-        `users/${user}/subjects/${subjectId}`,
+        `users/${user}/subject_attachments/${subjectKey}`,
         null,
         timeout,
       )
