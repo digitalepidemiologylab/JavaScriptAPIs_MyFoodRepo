@@ -46,3 +46,6 @@ export type TSubjectsResponse = API.TResponseType<{
 export type TNutrientsResponse = API.TResponseType<{
   subjects: TNutrient[]
 }>;
+
+export type TFoodResponse = API.TResponseType<{
+}>;
