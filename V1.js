@@ -233,6 +233,13 @@ export default class MFRAPI<T: TInstallationExtraInfo> extends GenericAPI {
     });
   }
 
+  getFood(
+    id: number,
+    timeout: number = 0,
+  ): Promise<RESPONSE.TFoodResponse> {
+    return this.requestGetURL(`foods/${id}`, timeout);
+  }
+
   addDish(
     userId: ?number,
     dish: TPostDish,
